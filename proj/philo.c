@@ -6,31 +6,56 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/13 17:55:14 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/13 19:11:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
 
-void	*work(void *arg)
+typedef struct s_rtval
 {
-	(void)arg;
-	printf("hello.\n");
+	t_val	*setval;
+	pthread_mutex_t	mutex;
+	int	*st_fork;
+	int	nb_seat;
+}	t_rtval;
+
+void	*routine(void *val)
+{
+//	(void)val;
+//	printf("hello.\n");
+	t_rtval	*rtval = (t_rtval *)val;
+	int	left_nb, right_nb;
+
+	left_nb = rtval->nb_seat;
+	if (left_nb > 0)
+		right_nb = left_nb - 1;
+	else
+		right_nb = rtval->setval->nb_philo - 1;
+	rtval->st_fork[left_nb] = 1;
+	rtval->st_fork[right_nb] = 1;
+	printf("No.%d\n", rtval->nb_seat);
+	usleep(1000000);
 	return (NULL);
 }
 
 int	philo(t_val *vals)
 {
 	pthread_t	philo[vals->nb_philo];
-	pthread_mutex_t	mutex;
-	int	i, j;
+	t_rtval		*rtvals;
+	int			i, j;
 
-	pthread_mutex_init(&mutex, NULL);
+	rtvals = (t_rtval *)malloc(sizeof(t_rtval));
+	rtvals->setval = vals;
+	pthread_mutex_init(&rtvals->mutex, NULL);
+	rtvals->st_fork = (int *)malloc(sizeof(int) * vals->nb_philo);
+	memset(rtvals->st_fork, 0, vals->nb_philo);
 	i = 0;
 	while (i < vals->nb_philo)
 	{
-		if (pthread_create(&philo[i], NULL, &work, NULL))
+		rtvals->nb_seat = i;
+		if (pthread_create(&philo[i], NULL, &routine, (void *)rtvals))
 			return (1);
 		i++;
 	}
@@ -41,6 +66,8 @@ int	philo(t_val *vals)
 			return (1);
 		j++;
 	}
-	pthread_mutex_destroy(&mutex);
+	pthread_mutex_destroy(&rtvals->mutex);
+	free(rtvals->st_fork);
+	free(rtvals);
 	return (0);
 }
