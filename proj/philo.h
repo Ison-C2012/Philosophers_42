@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/03 18:07:35 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/13 17:45:56 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <limits.h>
+#include <pthread.h>
 
 typedef struct	s_val
 {
@@ -29,5 +30,6 @@ int	ft_atoi(const char *nptr);
 int	ft_isdigit(char c);
 int	is_numbers(char **av);
 int	valid_value(t_val *val);
+int	philo(t_val *vals);
 
 #endif

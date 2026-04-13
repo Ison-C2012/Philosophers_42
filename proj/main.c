@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/03 18:07:13 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/13 17:35:41 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@ int	init_val(t_val *val, char **av)
 	return (0);
 }
 
+void	print_vals(t_val *vals)
+{
+	printf("number_of_philosophers=%d\n", vals->nb_philo);
+	printf("time_to_die=%d\n", vals->tm_die);
+	printf("time_to_eat=%d\n", vals->tm_eat);
+	printf("time_to_sleep=%d\n", vals->tm_sleep);
+	printf("number_of_times_each_philosopher_must_eat=%d\n", vals->nb_eat);
+}
+
 int	main(int argc, char **argv)
 {
 	t_val	vals;
@@ -37,13 +46,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_val(&vals, &argv[1]))
 		return (1);
-
-	printf("number_of_philosophers=%d\n", vals.nb_philo);
-	printf("time_to_die=%d\n", vals.tm_die);
-	printf("time_to_eat=%d\n", vals.tm_eat);
-	printf("time_to_sleep=%d\n", vals.tm_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%d\n", vals.nb_eat);
-
-
+	print_vals(&vals);
+	philo(&vals);
 	return (0);
 }
