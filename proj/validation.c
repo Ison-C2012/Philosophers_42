@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:02:51 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/13 17:33:41 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:26:49 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	is_numbers(char **av)
 	return (0);
 }
 
-int	valid_value(t_val *val)
+int	valid_value(t_shared *shared)
 {
-	if (val->nb_philo < 0 || val->tm_die < 0 || val->tm_eat < 0\
-		|| val->tm_sleep < 0 || val->nb_eat < 0)
+	if (shared->nb_philo < 0 || shared->time_to_die < 0 || shared->time_to_eat < 0\
+		|| shared->time_to_sleep < 0 || shared->nb_must_eat < 0)
 		return (1);
 	return (0);
 }

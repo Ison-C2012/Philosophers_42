@@ -6,47 +6,47 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/13 17:35:41 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/14 11:16:08 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_val(t_val *val, char **av)
+int	init_shared(t_shared *shared, char **av)
 {
 	if (is_numbers(&av[1]))
 		return (1);
-	val->nb_philo = ft_atoi(av[0]);
-	val->tm_die = ft_atoi(av[1]);
-	val->tm_eat = ft_atoi(av[2]);
-	val->tm_sleep = ft_atoi(av[3]);
+	shared->nb_philo = ft_atoi(av[0]);
+	shared->time_to_die = ft_atoi(av[1]);
+	shared->time_to_eat = ft_atoi(av[2]);
+	shared->time_to_sleep = ft_atoi(av[3]);
 	if (av[4] == NULL)
-		val->nb_eat = 0;
+		shared->nb_must_eat = 0;
 	else
-		val->nb_eat = ft_atoi(av[4]);
-	if (valid_value(val))
+		shared->nb_must_eat = ft_atoi(av[4]);
+	if (sharedid_sharedue(shared))
 		return (1);
 	return (0);
 }
 
-void	print_vals(t_val *vals)
+void	print_shared(t_shared *shared)
 {
-	printf("number_of_philosophers=%d\n", vals->nb_philo);
-	printf("time_to_die=%d\n", vals->tm_die);
-	printf("time_to_eat=%d\n", vals->tm_eat);
-	printf("time_to_sleep=%d\n", vals->tm_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%d\n", vals->nb_eat);
+	printf("number_of_philosophers=%d\n", shared->nb_philo);
+	printf("time_to_die=%d\n", shared->time_to_die);
+	printf("time_to_eat=%d\n", shared->time_to_eat);
+	printf("time_to_sleep=%d\n", shared->time_to_sleep);
+	printf("number_of_times_each_philosopher_must_eat=%d\n", shared->nb_must_eat);
 }
 
 int	main(int argc, char **argv)
 {
-	t_val	vals;
+	t_shared	shared;
 
 	if (argc != 5 && argc != 6)
 		return (1);
-	if (init_val(&vals, &argv[1]))
+	if (init_shared(&shared, &argv[1]))
 		return (1);
-	print_vals(&vals);
-	philo(&vals);
+	print_shared(&shared);
+	philo(&shared);
 	return (0);
 }
