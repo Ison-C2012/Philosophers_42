@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/14 11:16:08 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/14 13:34:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ int	init_shared(t_shared *shared, char **av)
 		shared->nb_must_eat = 0;
 	else
 		shared->nb_must_eat = ft_atoi(av[4]);
-	if (sharedid_sharedue(shared))
+	if (valid_value(shared))
 		return (1);
+	shared->forks = \
+		(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+//	memset(shared->forks, PTHREAD_MUTEX_INITIALIZER, shared->nb_philo);
 	return (0);
 }
 

@@ -6,65 +6,58 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/14 11:21:42 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/14 13:34:45 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
 
-typedef struct s_rtval
+typedef struct s_philo
 {
-	t_val	*setval;
-	pthread_mutex_t	mutex;
-	int	*st_fork;
-	int	nb_seat;
-}	t_rtval;
+	pthread_t	th;
+	int			id;
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
+	t_shared	*shared;
+}	t_philo;
 
-void	*routine(void *val)
+void	*philo_routine(void *p)
 {
-	t_rtval	*rtval = (t_rtval *)val;
-	int	left_nb, right_nb;
+	t_philo	*philo = (t_philo *)p;
+	int	left, right;
 
-	left_nb = rtval->nb_seat;
-	if (left_nb > 0)
-		right_nb = left_nb - 1;
+	left = philo->id - 1;
+	if (left > 0)
+		right = left - 1;
 	else
-		right_nb = rtval->setval->nb_philo - 1;
-	rtval->st_fork[left_nb] = 1;
-	rtval->st_fork[right_nb] = 1;
-//	printf("No.%d\n", rtval->nb_seat);
+		right = philo->shared->nb_philo - 1;
+	philo->left_fork = philo->shared->forks[left];
+	philo->right_fork = philo->shared->forks[right];
+	printf("No.%d\n", philo->id);
 	return (NULL);
 }
 
-int	philo(t_shared *shared);
+int	philo(t_shared *shared)
 {
-	pthread_t	philo[shared->nb_philo];
-	t_rtval		*rtvals;
+	t_philo	philos[shared->nb_philo];
 	int			i, j;
 
-	rtvals = (t_rtval *)malloc(sizeof(t_rtval));
-	rtvals->setval = shared;
-	pthread_mutex_init(&rtvals->mutex, NULL);
-	rtvals->st_fork = (int *)malloc(sizeof(int) * shared->nb_philo);
-	memset(rtvals->st_fork, 0, shared->nb_philo);
 	i = 0;
-	while (i < vals->nb_philo)
+	while (i < shared->nb_philo)
 	{
-		rtvals->nb_seat = i;
-		if (pthread_create(&philo[i], NULL, &routine, (void *)rtvals))
+		philos[i].id = i + 1;
+		philos[i].shared = shared;
+		if (pthread_create(&philos[i].th, NULL, &philo_routine, (void *)&philos[i]))
 			return (1);
 		i++;
 	}
 	j = 0;
-	while (j < vals->nb_philo)
+	while (j < shared->nb_philo)
 	{
-		if (pthread_join(philo[j], NULL))
+		if (pthread_join(philos[j].th, NULL))
 			return (1);
 		j++;
 	}
-	pthread_mutex_destroy(&rtvals->mutex);
-	free(rtvals->st_fork);
-	free(rtvals);
 	return (0);
 }
