@@ -6,27 +6,26 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/14 13:50:29 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/16 23:04:20 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
 
-typedef struct s_philo
-{
-	pthread_t	th;
-	int			id;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;
-	t_shared	*shared;
-}	t_philo;
-
 void	*philo_routine(void *p)
 {
 	t_philo	*philo = (t_philo *)p;
 
-	printf("No.%d\n", philo->id);
+//	printf("No.%d\n", philo->id);
+	if (philo->id % 2 == 0)
+	{
+
+	}
+	else
+	{
+
+	}
 	return (NULL);
 }
 
