@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/16 23:04:24 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/19 17:50:54 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <string.h>
 # include <limits.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 typedef struct	s_shared
 {
@@ -27,7 +28,7 @@ typedef struct	s_shared
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nb_must_eat;
-
+	long long		time_of_beginning;
 	pthread_mutex_t	*forks;
 }	t_shared;
 
@@ -35,8 +36,8 @@ typedef struct s_philo
 {
 	int				id;
 	t_shared		*shared;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	pthread_t		th;
 }	t_philo;
 
@@ -45,5 +46,13 @@ int	ft_isdigit(char c);
 int	is_numbers(char **av);
 int	valid_value(t_shared *shared);
 int	philo(t_shared *shared);
+
+void	pick_up_left_right(t_philo *p);
+void	pick_up_right_left(t_philo *p);
+void	put_down_left_right(t_philo *p);
+void	put_down_right_left(t_philo *p);
+
+long long	get_time(void);
+long long	get_elapsed_time(t_philo *p);
 
 #endif

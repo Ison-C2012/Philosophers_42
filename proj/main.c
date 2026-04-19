@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/14 13:34:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/19 17:25:41 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_shared(t_shared *shared, char **av)
 		return (1);
 	shared->forks = \
 		(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
-//	memset(shared->forks, PTHREAD_MUTEX_INITIALIZER, shared->nb_philo);
+	shared->time_of_beginning = get_time();
 	return (0);
 }
 
@@ -51,5 +51,6 @@ int	main(int argc, char **argv)
 		return (1);
 	print_shared(&shared);
 	philo(&shared);
+	free(shared.forks);
 	return (0);
 }
