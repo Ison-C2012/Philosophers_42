@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-long long	get_time(void)
+long long	get_time_ms(void)
 {
 	struct timeval	tv;
 
@@ -22,6 +22,5 @@ long long	get_time(void)
 
 long long	get_elapsed_time(t_philo *p)
 {
-	return ((get_time() - p->shared->time_of_beginning));
+	return ((get_time_ms() - p->shared->time_of_beginning));
 }
-

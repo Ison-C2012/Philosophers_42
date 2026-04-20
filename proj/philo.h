@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/19 17:50:54 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/20 16:35:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_shared
 	int				time_to_sleep;
 	int				nb_must_eat;
 	long long		time_of_beginning;
+	int				stop_flag;
 	pthread_mutex_t	*forks;
 }	t_shared;
 
@@ -36,23 +37,29 @@ typedef struct s_philo
 {
 	int				id;
 	t_shared		*shared;
+	pthread_t		th;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_t		th;
+	pthread_mutex_t	*meal_log;
+	long long		last_meal_time;
 }	t_philo;
 
 int	ft_atoi(const char *nptr);
 int	ft_isdigit(char c);
 int	is_numbers(char **av);
 int	valid_value(t_shared *shared);
+
 int	philo(t_shared *shared);
 
-void	pick_up_left_right(t_philo *p);
-void	pick_up_right_left(t_philo *p);
-void	put_down_left_right(t_philo *p);
-void	put_down_right_left(t_philo *p);
+void	take_forks(t_philo *philo);
+void	put_forks(t_philo *philo);
 
-long long	get_time(void);
+void	thinking(t_philo *p);
+void	eating(t_philo *p);
+void	sleeping(t_philo *p);
+void	died(t_philo *p);
+
+long long	get_time_ms(void);
 long long	get_elapsed_time(t_philo *p);
 
 #endif

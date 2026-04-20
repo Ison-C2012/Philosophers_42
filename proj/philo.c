@@ -5,56 +5,74 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Creatinged: 2026/04/13 17:36:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/19 18:07:05 by keitotak         ###   ########.fr       */
+/*   Creatinged: 2026/04/13 17:36:01 by keitotak       #+#    #+#             */
+/*   Updated: 2026/04/20 16:59:36 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
-
-void	thinking(t_philo *p)
-{
-	printf("%lld %d is thinking\n", get_elapsed_time(p), p->id);
-}
-
-void	eating(t_philo *p)
-{
-	printf("%lld %d is eating\n", get_elapsed_time(p), p->id);
-	usleep(p->shared->time_to_eat * 1000);
-}
-
-void	sleeping(t_philo *p)
-{
-	printf("%lld %d is sleeping\n", get_elapsed_time(p), p->id);
-	usleep(p->shared->time_to_sleep * 1000);
-}
 
 void	*philo_routine(void *p)
 {
 	t_philo			*philo = (t_philo *)p;
+	pthread_mutex_t	meal_log;
+
+	pthread_mutex_init(&meal_log, NULL);
+	philo->meal_log = &meal_log;
+	while (1)
+	{
+		if (philo->shared->stop_flag)
+			break ;
+		thinking(philo);
+		take_forks(philo);
+		if (philo->shared->stop_flag)
+			break ;
+		eating(philo);
+		put_forks(philo);
+		if (philo->shared->stop_flag)
+			break ;
+		sleeping(philo);
+	}
+	pthread_mutex_destroy(&meal_log);
+	return (NULL);
+}
+
+int	check_starvation(t_philo *p)
+{
+	long long	lmt;
+
+	pthread_mutex_lock(p->meal_log);
+	lmt = p->last_meal_time;
+	pthread_mutex_unlock(p->meal_log);
+	return (get_elapsed_time(p) - lmt >= p->shared->time_to_die);
+}
+
+void	*watcher_routine(void *p)
+{
+	t_philo	**philos = (t_philo **)p;
+	int		i;
 
 	while (1)
 	{
-		thinking(philo);
-		if (philo->id % 2 == 0)
-			pick_up_left_right(philo);
-		else
-			pick_up_right_left(philo);
-		eating(philo);
-		if (philo->id % 2 == 0)
-			put_down_left_right(philo);
-		else
-			put_down_right_left(philo);
-		sleeping(philo);
+		i = 0;
+		while (i < philos[i]->shared->nb_philo)
+		{
+			if (check_starvation(philos[i]))
+			{
+				died(philos[i]);
+				break ;
+			}
+			i++;
+		}
 	}
 	return (NULL);
 }
 
 int	philo(t_shared *shared)
 {
-	t_philo	philos[shared->nb_philo];
-	int		i, j;
+	t_philo		philos[shared->nb_philo];
+	pthread_t	watcher;
+	int			i, j;
 
 	i = 0;
 	while (i < shared->nb_philo)
@@ -67,6 +85,8 @@ int	philo(t_shared *shared)
 			return (1);
 		i++;
 	}
+	if (pthread_create(&watcher, NULL, &watcher_routine, (void *)&philos))
+		return (1);
 	j = 0;
 	while (j < shared->nb_philo)
 	{
@@ -74,5 +94,6 @@ int	philo(t_shared *shared)
 			return (1);
 		j++;
 	}
+	pthread_join(watcher, NULL);
 	return (0);
 }

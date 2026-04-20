@@ -1,0 +1,54 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/keitotak/Nest/cursus/cc/project/rank3/philo/proj/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+PHILO_H	philo.h	/^# define PHILO_H$/;"	d
+check	ft_atoi.c	/^static long	check(long nb, int sg, char c)$/;"	f	typeref:typename:long	file:
+check_starvation	philo.c	/^int	check_starvation(t_philo *p)$/;"	f	typeref:typename:int
+died	action.c	/^void	died(t_philo *p)$/;"	f	typeref:typename:void
+eating	action.c	/^void	eating(t_philo *p)$/;"	f	typeref:typename:void
+forks	philo.h	/^	pthread_mutex_t	*forks;$/;"	m	struct:s_shared	typeref:typename:pthread_mutex_t *
+ft_atoi	ft_atoi.c	/^int	ft_atoi(const char *nptr)$/;"	f	typeref:typename:int
+ft_isdigit	ft_atoi.c	/^int	ft_isdigit(char c)$/;"	f	typeref:typename:int
+ft_issign	ft_atoi.c	/^static int	ft_issign(char c)$/;"	f	typeref:typename:int	file:
+ft_isspace	ft_atoi.c	/^static int	ft_isspace(char c)$/;"	f	typeref:typename:int	file:
+get_elapsed_time	time.c	/^long long	get_elapsed_time(t_philo *p)$/;"	f	typeref:typename:long long
+get_time_ms	time.c	/^long long	get_time_ms(void)$/;"	f	typeref:typename:long long
+id	philo.h	/^	int				id;$/;"	m	struct:s_philo	typeref:typename:int
+init_shared	main.c	/^int	init_shared(t_shared *shared, char **av)$/;"	f	typeref:typename:int
+is_number	valid.c	/^int	is_number(char *str)$/;"	f	typeref:typename:int
+is_numbers	valid.c	/^int	is_numbers(char **av)$/;"	f	typeref:typename:int
+last_meal_time	philo.h	/^	long long		last_meal_time;$/;"	m	struct:s_philo	typeref:typename:long long
+left_fork	philo.h	/^	pthread_mutex_t	*left_fork;$/;"	m	struct:s_philo	typeref:typename:pthread_mutex_t *
+main	main.c	/^int	main(int argc, char **argv)$/;"	f	typeref:typename:int
+meal_time	philo.h	/^	pthread_mutex_t	*meal_time;$/;"	m	struct:s_philo	typeref:typename:pthread_mutex_t *
+nb_must_eat	philo.h	/^	int				nb_must_eat;$/;"	m	struct:s_shared	typeref:typename:int
+nb_philo	philo.h	/^	int				nb_philo;$/;"	m	struct:s_shared	typeref:typename:int
+philo	philo.c	/^int	philo(t_shared *shared)$/;"	f	typeref:typename:int
+philo_routine	philo.c	/^void	*philo_routine(void *p)$/;"	f	typeref:typename:void *
+print_shared	main.c	/^void	print_shared(t_shared *shared)$/;"	f	typeref:typename:void
+put_forks	fork.c	/^void	put_forks(t_philo *p)$/;"	f	typeref:typename:void
+right_fork	philo.h	/^	pthread_mutex_t	*right_fork;$/;"	m	struct:s_philo	typeref:typename:pthread_mutex_t *
+s_philo	philo.h	/^typedef struct s_philo$/;"	s
+s_shared	philo.h	/^typedef struct	s_shared$/;"	s
+shared	philo.h	/^	t_shared		*shared;$/;"	m	struct:s_philo	typeref:typename:t_shared *
+sleeping	action.c	/^void	sleeping(t_philo *p)$/;"	f	typeref:typename:void
+stop_flag	philo.h	/^	int				stop_flag;$/;"	m	struct:s_shared	typeref:typename:int
+t_philo	philo.h	/^}	t_philo;$/;"	t	typeref:struct:s_philo
+t_shared	philo.h	/^}	t_shared;$/;"	t	typeref:struct:s_shared
+take_forks	fork.c	/^void	take_forks(t_philo *p)$/;"	f	typeref:typename:void
+th	philo.h	/^	pthread_t		th;$/;"	m	struct:s_philo	typeref:typename:pthread_t
+thinking	action.c	/^void	thinking(t_philo *p)$/;"	f	typeref:typename:void
+time_of_beginning	philo.h	/^	long long		time_of_beginning;$/;"	m	struct:s_shared	typeref:typename:long long
+time_to_die	philo.h	/^	int				time_to_die;$/;"	m	struct:s_shared	typeref:typename:int
+time_to_eat	philo.h	/^	int				time_to_eat;$/;"	m	struct:s_shared	typeref:typename:int
+time_to_sleep	philo.h	/^	int				time_to_sleep;$/;"	m	struct:s_shared	typeref:typename:int
+valid_value	valid.c	/^int	valid_value(t_shared *shared)$/;"	f	typeref:typename:int
+watcher_routine	philo.c	/^void	*watcher_routine(void *p)$/;"	f	typeref:typename:void *
