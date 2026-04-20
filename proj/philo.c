@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Creatinged: 2026/04/13 17:36:01 by keitotak       #+#    #+#             */
-/*   Updated: 2026/04/20 16:59:36 by keitotak         ###   ########.fr       */
+/*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
+/*   Updated: 2026/04/20 18:17:56 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,24 @@ int	check_starvation(t_philo *p)
 
 void	*watcher_routine(void *p)
 {
-	t_philo	**philos = (t_philo **)p;
+	t_philo	*philos = (t_philo *)p;
 	int		i;
+	int		nb_philo;
 
-	while (1)
+	nb_philo = philos[0].shared->nb_philo;
+	while (!philos[0].shared->stop_flag)
 	{
 		i = 0;
-		while (i < philos[i]->shared->nb_philo)
+		while (i < nb_philo)
 		{
-			if (check_starvation(philos[i]))
+			if (check_starvation(&philos[i]))
 			{
-				died(philos[i]);
-				break ;
+				died(&philos[i]);
+				return (NULL);
 			}
 			i++;
 		}
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -79,13 +82,14 @@ int	philo(t_shared *shared)
 	{
 		philos[i].id = i + 1;
 		philos[i].shared = shared;
+		philos[i].last_meal_time = get_elapsed_time(&philos[i]);
 		philos[i].left_fork = &shared->forks[i];
 		philos[i].right_fork = i > 0 ? &shared->forks[i - 1] : &shared->forks[shared->nb_philo - 1];
 		if (pthread_create(&philos[i].th, NULL, &philo_routine, (void *)&philos[i]))
 			return (1);
 		i++;
 	}
-	if (pthread_create(&watcher, NULL, &watcher_routine, (void *)&philos))
+	if (pthread_create(&watcher, NULL, &watcher_routine, (void *)philos))
 		return (1);
 	j = 0;
 	while (j < shared->nb_philo)
