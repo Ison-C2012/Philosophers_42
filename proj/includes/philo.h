@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/20 16:35:55 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/21 16:01:23 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	is_numbers(char **av);
 int	valid_value(t_shared *shared);
 
 int	philo(t_shared *shared);
+
+void	*watcher_routine(void *p);
 
 void	take_forks(t_philo *philo);
 void	put_forks(t_philo *philo);

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/04/20 18:17:56 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/21 15:57:12 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,38 +37,17 @@ void	*philo_routine(void *p)
 	return (NULL);
 }
 
-int	check_starvation(t_philo *p)
+int	init_philo(t_philo *philo, t_shared *shared, int i)
 {
-	long long	lmt;
-
-	pthread_mutex_lock(p->meal_log);
-	lmt = p->last_meal_time;
-	pthread_mutex_unlock(p->meal_log);
-	return (get_elapsed_time(p) - lmt >= p->shared->time_to_die);
-}
-
-void	*watcher_routine(void *p)
-{
-	t_philo	*philos = (t_philo *)p;
-	int		i;
-	int		nb_philo;
-
-	nb_philo = philos[0].shared->nb_philo;
-	while (!philos[0].shared->stop_flag)
-	{
-		i = 0;
-		while (i < nb_philo)
-		{
-			if (check_starvation(&philos[i]))
-			{
-				died(&philos[i]);
-				return (NULL);
-			}
-			i++;
-		}
-		usleep(1000);
-	}
-	return (NULL);
+	philo->id = i + 1;
+	philo->shared = shared;
+	philo->last_meal_time = get_elapsed_time(philo);
+	philo->left_fork = &shared->forks[i];
+	if (i > 0)
+		philo->right_fork = &shared->forks[i - 1];
+	else
+		philo->right_fork = &shared->forks[shared->nb_philo - 1];
+	return (0);
 }
 
 int	philo(t_shared *shared)
@@ -80,11 +59,7 @@ int	philo(t_shared *shared)
 	i = 0;
 	while (i < shared->nb_philo)
 	{
-		philos[i].id = i + 1;
-		philos[i].shared = shared;
-		philos[i].last_meal_time = get_elapsed_time(&philos[i]);
-		philos[i].left_fork = &shared->forks[i];
-		philos[i].right_fork = i > 0 ? &shared->forks[i - 1] : &shared->forks[shared->nb_philo - 1];
+		init_philo(&philos[i], shared, i);
 		if (pthread_create(&philos[i].th, NULL, &philo_routine, (void *)&philos[i]))
 			return (1);
 		i++;
