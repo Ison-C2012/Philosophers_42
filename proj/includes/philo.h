@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/21 16:01:23 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/24 00:16:23 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct	s_shared
 	int				nb_must_eat;
 	long long		time_of_beginning;
 	int				stop_flag;
+	pthread_mutex_t	flag;
 	pthread_mutex_t	*forks;
 }	t_shared;
 
@@ -40,7 +41,7 @@ typedef struct s_philo
 	pthread_t		th;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*meal_log;
+	pthread_mutex_t	meal_log;
 	long long		last_meal_time;
 }	t_philo;
 
@@ -51,10 +52,11 @@ int	valid_value(t_shared *shared);
 
 int	philo(t_shared *shared);
 
-void	*watcher_routine(void *p);
+void	*waiter_routine(void *p);
+int		check_stop(t_philo *p);
 
-void	take_forks(t_philo *philo);
-void	put_forks(t_philo *philo);
+int		take_forks(t_philo *p);
+int		put_forks(t_philo *p);
 
 void	thinking(t_philo *p);
 void	eating(t_philo *p);

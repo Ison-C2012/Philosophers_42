@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/20 16:26:10 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/23 23:21:27 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	init_fork(pthread_mutex_t *fork, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_mutex_init(&fork[i], NULL);
+		i++;
+	}
+	return (0);
+}
+
+int	clean_fork(pthread_mutex_t *forks, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
+	return (0);
+}
 
 int	init_shared(t_shared *shared, char **av)
 {
@@ -28,8 +54,10 @@ int	init_shared(t_shared *shared, char **av)
 		return (1);
 	shared->forks = \
 		(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+	init_fork(shared->forks, shared->nb_philo);
 	shared->time_of_beginning = get_time_ms();
 	shared->stop_flag = 0;
+	pthread_mutex_init(&shared->flag, NULL);
 	return (0);
 }
 
@@ -51,7 +79,12 @@ int	main(int argc, char **argv)
 	if (init_shared(&shared, &argv[1]))
 		return (1);
 	print_shared(&shared);
-	philo(&shared);
+	if (philo(&shared))
+		return (1);
+	clean_fork(shared.forks, shared.nb_philo);
 	free(shared.forks);
+	pthread_mutex_destroy(&shared.flag);
 	return (0);
 }
+
+/*signal function for Ctrl+C/Ctrl+D to prevent from memory leaks*/
