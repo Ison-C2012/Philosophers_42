@@ -16,7 +16,7 @@ SRCS	:= 	main.c \
 			philo.c \
 			fork.c \
 			state.c \
-			watch.c \
+			waiter.c \
 			time.c
 OBJS	:= $(SRCS:%.c=$(OBJDIR)/%.o)
 
@@ -37,7 +37,7 @@ $(NAME): $(OBJS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< $(IFLAGS) $(OFLAGS) -o $@
+	$(CC) $(CFLAGS) -c $< $(IFLAGS) -o $@
 
 clean:
 	rm -rf $(OBJDIR)

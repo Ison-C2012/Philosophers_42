@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/24 00:16:23 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/24 12:39:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	meal_log;
 	long long		last_meal_time;
+	int				nb_to_eat;
 }	t_philo;
 
 int	ft_atoi(const char *nptr);
@@ -55,8 +56,8 @@ int	philo(t_shared *shared);
 void	*waiter_routine(void *p);
 int		check_stop(t_philo *p);
 
-int		take_forks(t_philo *p);
-int		put_forks(t_philo *p);
+void	take_forks(t_philo *p);
+void	put_forks(t_philo *p);
 
 void	thinking(t_philo *p);
 void	eating(t_philo *p);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   action.c                                           :+:      :+:    :+:   */
+/*   state.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:26:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/24 00:20:39 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:27:54 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	thinking(t_philo *p)
 {
 	printf("%lld %d is thinking\n", get_elapsed_time(p), p->id);
-	usleep(1000);
 }
 
 void	eating(t_philo *p)
@@ -28,10 +27,16 @@ void	eating(t_philo *p)
 	pthread_mutex_lock(&p->meal_log);
 	p->last_meal_time = get_elapsed_time(p);
 	pthread_mutex_unlock(&p->meal_log);
+	p->nb_to_eat++;
 }
 
 void	sleeping(t_philo *p)
 {
 	printf("%lld %d is sleeping\n", get_elapsed_time(p), p->id);
 	usleep(p->shared->time_to_sleep * 1000);
+}
+
+void	died(t_philo *p)
+{
+	printf("%lld %d died\n", get_elapsed_time(p), p->id);
 }

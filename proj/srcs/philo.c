@@ -6,11 +6,23 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/04/24 00:47:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:29:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	check_stop(t_philo *p)
+{
+	pthread_mutex_lock(&p->shared->flag);
+	if (p->shared->stop_flag)
+	{
+		pthread_mutex_unlock(&p->shared->flag);
+		return (1);
+	}	
+	pthread_mutex_unlock(&p->shared->flag);
+	return (0);
+}
 
 void	*philo_routine(void *p)
 {
@@ -21,14 +33,13 @@ void	*philo_routine(void *p)
 		if (check_stop(philo))
 			break ;
 		thinking(philo);
-		if (check_stop(philo))
-			break ;
 		take_forks(philo);
 		if (check_stop(philo))
+		{
+			put_forks(philo);
 			break ;
+		}
 		eating(philo);
-		if (check_stop(philo))
-			break ;
 		put_forks(philo);
 		if (check_stop(philo))
 			break ;
@@ -48,6 +59,7 @@ int	init_philo(t_philo *philo, t_shared *shared, int i)
 	else
 		philo->right_fork = &shared->forks[shared->nb_philo - 1];
 	pthread_mutex_init(&philo->meal_log, NULL);
+	philo->nb_to_eat = 0;
 	return (0);
 }
 
