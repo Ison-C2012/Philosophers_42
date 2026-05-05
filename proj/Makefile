@@ -14,6 +14,7 @@ SRCS	:= 	main.c \
 			valid.c \
 			ft_atoi.c \
 			philo.c \
+			philo_helper.c \
 			fork.c \
 			status.c \
 			waiter.c \
