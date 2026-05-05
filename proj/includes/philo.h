@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 16:50:58 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:10:44 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-#define EATING 0
-#define SLEEPING 1
-#define THINKING 2
-#define DIED 3
+# define EATING 0
+# define SLEEPING 1
+# define THINKING 2
+# define DIED 3
 
-typedef struct	s_shared
+typedef struct s_shared
 {
 	int				nb_philo;
 	int				time_to_die;
@@ -54,25 +54,25 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 }	t_philo;
 
-int	ft_atoi(const char *nptr);
-int	ft_isdigit(char c);
-int	is_numbers(char **av);
-int	valid_value(t_shared *shared);
+int			ft_atoi(const char *nptr);
+int			ft_isdigit(char c);
+int			is_numbers(char **av);
+int			valid_value(t_shared *shared);
 
-int	philo(t_shared *shared);
+int			philo(t_shared *shared);
 
-void	*waiter_routine(void *p);
-bool	check_stop(t_philo *p);
-void	flag_up(t_philo *p);
+void		*waiter_routine(void *p);
+bool		check_stop(t_philo *p);
+void		flag_up(t_philo *p);
 
-void	take_forks(t_philo *p);
-void	put_forks(t_philo *p);
+void		take_forks(t_philo *p);
+void		put_forks(t_philo *p);
 
-void	take_a_fork(t_philo *p);
-void	eating(t_philo *p);
-void	sleeping(t_philo *p);
-void	thinking(t_philo *p);
-void	died(t_philo *p);
+void		print_status(t_philo *p, char *s);
+void		eating(t_philo *p);
+void		sleeping(t_philo *p);
+void		thinking(t_philo *p);
+void		died(t_philo *p);
 
 long long	get_time_ms(void);
 long long	get_elapsed_time(t_philo *p);

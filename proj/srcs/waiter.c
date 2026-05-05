@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 17:10:55 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:21:01 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	flag_up(t_philo *p)
 int	check_termination(t_philo *p)
 {
 	int	i;
-	int		nb_philo;
+	int	nb_philo;
 
 	i = 0;
 	nb_philo = p[0].shared->nb_philo;
@@ -49,15 +49,14 @@ int	check_termination(t_philo *p)
 
 void	*waiter_routine(void *p)
 {
-	t_philo	*philos = (t_philo *)p;
+	t_philo	*philos;
 	int		i;
-	int		nb_philo;
 
-	nb_philo = philos[0].shared->nb_philo;
+	philos = (t_philo *)p;
 	while (1)
 	{
 		i = 0;
-		while (i < nb_philo)
+		while (i < philos[0].shared->nb_philo)
 		{
 			if (check_starvation(&philos[i]))
 			{
@@ -75,4 +74,3 @@ void	*waiter_routine(void *p)
 	}
 	return (NULL);
 }
-

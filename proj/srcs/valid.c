@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validation.c                                       :+:      :+:    :+:   */
+/*   valid.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:02:51 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/14 11:26:49 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:15:22 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ int	is_numbers(char **av)
 
 int	valid_value(t_shared *shared)
 {
-	if (shared->nb_philo < 0 || shared->time_to_die < 0 || shared->time_to_eat < 0\
-		|| shared->time_to_sleep < 0 || shared->nb_must_eat < 0)
-		return (1);
+	if (shared->nb_philo < 0 || shared->time_to_die < 0)
+		if (shared->time_to_eat < 0 || shared->time_to_sleep < 0)
+			if (shared->nb_must_eat < 0)
+				return (1);
 	return (0);
 }

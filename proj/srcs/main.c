@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 16:04:36 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:19:47 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	init_shared(t_shared *shared, char **av)
 		shared->nb_must_eat = ft_atoi(av[4]);
 	if (valid_value(shared))
 		return (1);
-	shared->forks = \
-		(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+	shared->forks = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
 	init_fork(shared->forks, shared->nb_philo);
 	shared->time_of_beginning = get_time_ms();
 	shared->stop_flag = 0;
@@ -68,7 +68,8 @@ void	print_shared(t_shared *shared)
 	printf("time_to_die=%d\n", shared->time_to_die);
 	printf("time_to_eat=%d\n", shared->time_to_eat);
 	printf("time_to_sleep=%d\n", shared->time_to_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%d\n", shared->nb_must_eat);
+	printf("number_of_times_each_philosopher_must_eat=%d\n",
+		shared->nb_must_eat);
 }
 
 int	main(int argc, char **argv)

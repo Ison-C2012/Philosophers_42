@@ -6,30 +6,17 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/05 16:52:15 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:47:04 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_stop(t_philo *p)
-{
-	pthread_mutex_lock(&p->shared->flag);
-	if (p->shared->stop_flag)
-	{
-		pthread_mutex_unlock(&p->shared->flag);
-		return (true);
-	}	
-	pthread_mutex_unlock(&p->shared->flag);
-	return (false);
-}
-
 void	*philo_routine(void *p)
 {
-	t_philo	*philo = (t_philo *)p;
+	t_philo	*philo;
 
-//	if (philo->id % 2)
-//		usleep(1000);
+	philo = (t_philo *)p;
 	while (1)
 	{
 		if (check_stop(philo))
@@ -65,30 +52,53 @@ void	init_philo(t_philo *philo, t_shared *shared, int i)
 	pthread_mutex_init(&philo->meal_log, NULL);
 }
 
-int	philo(t_shared *shared)
+int	create_philo(t_philo *philos, t_shared *shared)
 {
-	t_philo		philos[shared->nb_philo];
-	pthread_t	waiter;
-	int			i, j;
+	int	i;
 
 	i = 0;
 	while (i < shared->nb_philo)
 	{
 		init_philo(&philos[i], shared, i);
-		if (pthread_create(&philos[i].th, NULL, &philo_routine, (void *)&philos[i]))
+		if (pthread_create(&philos[i].th, NULL, &philo_routine,
+				(void *)&philos[i]))
 			return (1);
 		i++;
 	}
+	return (0);
+}
+
+int	remove_philo(t_philo *philos, t_shared *shared)
+{
+	int	i;
+
+	i = 0;
+	while (i < shared->nb_philo)
+	{
+		if (pthread_join(philos[i].th, NULL))
+			return (1);
+		pthread_mutex_destroy(&philos[i].meal_log);
+		i++;
+	}
+	return (0);
+}
+
+int	philo(t_shared *shared)
+{
+	t_philo		*philos;
+	pthread_t	waiter;
+
+	philos = (t_philo *)malloc(sizeof(t_philo) * shared->nb_philo);
+	if (!philos)
+		return (1);
+	if (create_philo(philos, shared))
+		return (1);
 	if (pthread_create(&waiter, NULL, &waiter_routine, (void *)philos))
 		return (1);
-	pthread_join(waiter, NULL);
-	j = 0;
-	while (j < shared->nb_philo)
-	{
-		if (pthread_join(philos[j].th, NULL))
-			return (1);
-		pthread_mutex_destroy(&philos[j].meal_log);
-		j++;
-	}
+	if (pthread_join(waiter, NULL))
+		return (1);
+	if (remove_philo(philos, shared))
+		return (1);
+	free(philos);
 	return (0);
 }

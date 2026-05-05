@@ -6,27 +6,39 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 15:35:35 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:46:25 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	check_stop(t_philo *p)
+{
+	pthread_mutex_lock(&p->shared->flag);
+	if (p->shared->stop_flag)
+	{
+		pthread_mutex_unlock(&p->shared->flag);
+		return (true);
+	}
+	pthread_mutex_unlock(&p->shared->flag);
+	return (false);
+}
 
 void	take_forks(t_philo *p)
 {
 	if (p->id % 2 == 0)
 	{
 		pthread_mutex_lock(p->left_fork);
-		take_a_fork(p);
+		print_status(p, "has taken a fork");
 		pthread_mutex_lock(p->right_fork);
-		take_a_fork(p);
+		print_status(p, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(p->right_fork);
-		take_a_fork(p);
+		print_status(p, "has taken a fork");
 		pthread_mutex_lock(p->left_fork);
-		take_a_fork(p);
+		print_status(p, "has taken a fork");
 	}
 }
 
