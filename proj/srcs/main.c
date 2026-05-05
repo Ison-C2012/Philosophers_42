@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 18:19:47 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:59:49 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,6 @@ int	init_fork(pthread_mutex_t *fork, int nb)
 	while (i < nb)
 	{
 		pthread_mutex_init(&fork[i], NULL);
-		i++;
-	}
-	return (0);
-}
-
-int	clean_fork(pthread_mutex_t *forks, int nb)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb)
-	{
-		pthread_mutex_destroy(&forks[i]);
 		i++;
 	}
 	return (0);
@@ -62,14 +49,25 @@ int	init_shared(t_shared *shared, char **av)
 	return (0);
 }
 
-void	print_shared(t_shared *shared)
+int	clean_fork(pthread_mutex_t *forks, int nb)
 {
-	printf("number_of_philosophers=%d\n", shared->nb_philo);
-	printf("time_to_die=%d\n", shared->time_to_die);
-	printf("time_to_eat=%d\n", shared->time_to_eat);
-	printf("time_to_sleep=%d\n", shared->time_to_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%d\n",
-		shared->nb_must_eat);
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
+	return (0);
+}
+
+void	clean_shared(t_shared *shared)
+{
+	clean_fork(shared->forks, shared->nb_philo);
+	free(shared->forks);
+	pthread_mutex_destroy(&shared->flag);
+	pthread_mutex_destroy(&shared->print);
 }
 
 int	main(int argc, char **argv)
@@ -80,14 +78,22 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_shared(&shared, &argv[1]))
 		return (1);
-	print_shared(&shared);
 	if (philo(&shared))
 		return (1);
-	clean_fork(shared.forks, shared.nb_philo);
-	free(shared.forks);
-	pthread_mutex_destroy(&shared.flag);
-	pthread_mutex_destroy(&shared.print);
+	clean_shared(&shared);
 	return (0);
 }
+
+/*
+void	print_shared(t_shared *shared)
+{
+	printf("number_of_philosophers=%d\n", shared->nb_philo);
+	printf("time_to_die=%d\n", shared->time_to_die);
+	printf("time_to_eat=%d\n", shared->time_to_eat);
+	printf("time_to_sleep=%d\n", shared->time_to_sleep);
+	printf("number_of_times_each_philosopher_must_eat=%d\n",
+		shared->nb_must_eat);
+}
+*/
 
 /*signal function for Ctrl+C/Ctrl+D to prevent from memory leaks*/
