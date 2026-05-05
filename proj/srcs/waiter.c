@@ -15,9 +15,13 @@
 int	check_starvation(t_philo *p)
 {
 	long long	pt;
+	long long	lmt;
 
 	pt = get_elapsed_time(p);
-	return (pt - p->last_meal_time >= p->shared->time_to_die);
+	pthread_mutex_lock(&p->meal_log);
+	lmt = p->last_meal_time;
+	pthread_mutex_unlock(&p->meal_log);
+	return (pt - lmt >= p->shared->time_to_die);
 }
 
 void	flag_up(t_philo *p)

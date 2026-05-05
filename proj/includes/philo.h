@@ -49,6 +49,7 @@ typedef struct s_philo
 	long long		last_meal_time;
 	t_shared		*shared;
 	pthread_t		th;
+	pthread_mutex_t	meal_log;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	t_philo;

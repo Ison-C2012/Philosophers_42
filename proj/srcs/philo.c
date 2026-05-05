@@ -28,8 +28,8 @@ void	*philo_routine(void *p)
 {
 	t_philo	*philo = (t_philo *)p;
 
-	if (philo->id % 2)
-		usleep(1000);
+//	if (philo->id % 2)
+//		usleep(1000);
 	while (1)
 	{
 		if (check_stop(philo))
@@ -55,13 +55,14 @@ void	init_philo(t_philo *philo, t_shared *shared, int i)
 	philo->id = i + 1;
 	philo->status = THINKING;
 	philo->shared = shared;
-	philo->last_meal_time = get_elapsed_time(philo);
 	philo->left_fork = &shared->forks[i];
 	if (i > 0)
 		philo->right_fork = &shared->forks[i - 1];
 	else
 		philo->right_fork = &shared->forks[shared->nb_philo - 1];
 	philo->nb_to_eat = 0;
+	philo->last_meal_time = get_elapsed_time(philo);
+	pthread_mutex_init(&philo->meal_log, NULL);
 }
 
 int	philo(t_shared *shared)
@@ -86,6 +87,7 @@ int	philo(t_shared *shared)
 	{
 		if (pthread_join(philos[j].th, NULL))
 			return (1);
+		pthread_mutex_destroy(&philos[j].meal_log);
 		j++;
 	}
 	return (0);
