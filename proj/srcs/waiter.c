@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wait.c                                             :+:      :+:    :+:   */
+/*   waiter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/24 13:26:41 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:10:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 int	check_starvation(t_philo *p)
 {
-	long long	lmt;
+	long long	pt;
 
-	pthread_mutex_lock(&p->meal_log);
-	lmt = p->last_meal_time;
-	pthread_mutex_unlock(&p->meal_log);
-	return (get_elapsed_time(p) - lmt >= p->shared->time_to_die);
+	pt = get_elapsed_time(p);
+	return (pt - p->last_meal_time >= p->shared->time_to_die);
 }
 
 void	flag_up(t_philo *p)
@@ -60,7 +58,6 @@ void	*waiter_routine(void *p)
 			if (check_starvation(&philos[i]))
 			{
 				died(&philos[i]);
-				flag_up(p);
 				return (NULL);
 			}
 			i++;

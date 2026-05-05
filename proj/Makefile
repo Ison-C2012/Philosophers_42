@@ -15,7 +15,7 @@ SRCS	:= 	main.c \
 			ft_atoi.c \
 			philo.c \
 			fork.c \
-			state.c \
+			status.c \
 			waiter.c \
 			time.c
 OBJS	:= $(SRCS:%.c=$(OBJDIR)/%.o)

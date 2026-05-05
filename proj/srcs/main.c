@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/04/23 23:21:27 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 16:04:36 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	init_shared(t_shared *shared, char **av)
 	shared->time_of_beginning = get_time_ms();
 	shared->stop_flag = 0;
 	pthread_mutex_init(&shared->flag, NULL);
+	pthread_mutex_init(&shared->print, NULL);
 	return (0);
 }
 
@@ -84,6 +85,7 @@ int	main(int argc, char **argv)
 	clean_fork(shared.forks, shared.nb_philo);
 	free(shared.forks);
 	pthread_mutex_destroy(&shared.flag);
+	pthread_mutex_destroy(&shared.print);
 	return (0);
 }
 

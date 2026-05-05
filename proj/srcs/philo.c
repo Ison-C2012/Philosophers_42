@@ -6,28 +6,30 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/04/24 13:29:55 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 16:52:15 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_stop(t_philo *p)
+bool	check_stop(t_philo *p)
 {
 	pthread_mutex_lock(&p->shared->flag);
 	if (p->shared->stop_flag)
 	{
 		pthread_mutex_unlock(&p->shared->flag);
-		return (1);
+		return (true);
 	}	
 	pthread_mutex_unlock(&p->shared->flag);
-	return (0);
+	return (false);
 }
 
 void	*philo_routine(void *p)
 {
 	t_philo	*philo = (t_philo *)p;
 
+	if (philo->id % 2)
+		usleep(1000);
 	while (1)
 	{
 		if (check_stop(philo))
@@ -48,9 +50,10 @@ void	*philo_routine(void *p)
 	return (NULL);
 }
 
-int	init_philo(t_philo *philo, t_shared *shared, int i)
+void	init_philo(t_philo *philo, t_shared *shared, int i)
 {
 	philo->id = i + 1;
+	philo->status = THINKING;
 	philo->shared = shared;
 	philo->last_meal_time = get_elapsed_time(philo);
 	philo->left_fork = &shared->forks[i];
@@ -58,9 +61,7 @@ int	init_philo(t_philo *philo, t_shared *shared, int i)
 		philo->right_fork = &shared->forks[i - 1];
 	else
 		philo->right_fork = &shared->forks[shared->nb_philo - 1];
-	pthread_mutex_init(&philo->meal_log, NULL);
 	philo->nb_to_eat = 0;
-	return (0);
 }
 
 int	philo(t_shared *shared)
@@ -85,7 +86,6 @@ int	philo(t_shared *shared)
 	{
 		if (pthread_join(philos[j].th, NULL))
 			return (1);
-		pthread_mutex_destroy(&philos[j].meal_log);
 		j++;
 	}
 	return (0);
