@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 18:46:25 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 21:06:38 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,14 @@ bool	check_stop(t_philo *p)
 
 void	take_forks(t_philo *p)
 {
-	if (p->id % 2 == 0)
-	{
-		pthread_mutex_lock(p->left_fork);
-		print_status(p, "has taken a fork");
-		pthread_mutex_lock(p->right_fork);
-		print_status(p, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(p->right_fork);
-		print_status(p, "has taken a fork");
-		pthread_mutex_lock(p->left_fork);
-		print_status(p, "has taken a fork");
-	}
+	pthread_mutex_lock(p->left_fork);
+	print_status(p, "has taken a fork");
+	pthread_mutex_lock(p->right_fork);
+	print_status(p, "has taken a fork");
 }
 
 void	put_forks(t_philo *p)
 {
-	if (p->id % 2 == 0)
-	{
-		pthread_mutex_unlock(p->left_fork);
-		pthread_mutex_unlock(p->right_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(p->right_fork);
-		pthread_mutex_unlock(p->left_fork);
-	}
+	pthread_mutex_unlock(p->left_fork);
+	pthread_mutex_unlock(p->right_fork);
 }

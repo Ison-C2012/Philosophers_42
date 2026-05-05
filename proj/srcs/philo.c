@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/05 18:47:04 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/05 21:03:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	*philo_routine(void *p)
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
+	if (philo->id % 2)
+		usleep(1000);
 	while (1)
 	{
 		if (check_stop(philo))
