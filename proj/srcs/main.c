@@ -6,23 +6,32 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 18:59:49 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/06 13:37:46 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_fork(pthread_mutex_t *fork, int nb)
+int	init_mutex(t_shared *shared)
 {
 	int	i;
 
+	shared->forks = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+	if (shared->forks == NULL)
+		return (EXIT_FAILURE);
 	i = 0;
-	while (i < nb)
+	while (i < shared->nb_philo)
 	{
-		pthread_mutex_init(&fork[i], NULL);
+		if (pthread_mutex_init(&shared->forks[i], NULL))
+			return (EXIT_FAILURE);
 		i++;
 	}
-	return (0);
+	if (pthread_mutex_init(&shared->flag, NULL))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&shared->print, NULL))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	init_shared(t_shared *shared, char **av)
@@ -38,36 +47,31 @@ int	init_shared(t_shared *shared, char **av)
 	else
 		shared->nb_must_eat = ft_atoi(av[4]);
 	if (valid_value(shared))
-		return (1);
-	shared->forks = (pthread_mutex_t *)
-		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
-	init_fork(shared->forks, shared->nb_philo);
+		return (EXIT_FAILURE);
 	shared->time_of_beginning = get_time_ms();
 	shared->stop_flag = 0;
-	pthread_mutex_init(&shared->flag, NULL);
-	pthread_mutex_init(&shared->print, NULL);
-	return (0);
+	if (init_mutex(shared))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
-int	clean_fork(pthread_mutex_t *forks, int nb)
+int	clean_shared(t_shared *shared)
 {
 	int	i;
 
 	i = 0;
-	while (i < nb)
+	while (i < shared->nb_philo)
 	{
-		pthread_mutex_destroy(&forks[i]);
+		if (pthread_mutex_destroy(&shared->forks[i]))
+			return (EXIT_FAILURE);
 		i++;
 	}
-	return (0);
-}
-
-void	clean_shared(t_shared *shared)
-{
-	clean_fork(shared->forks, shared->nb_philo);
 	free(shared->forks);
-	pthread_mutex_destroy(&shared->flag);
-	pthread_mutex_destroy(&shared->print);
+	if (pthread_mutex_destroy(&shared->flag))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&shared->print))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	main(int argc, char **argv)
@@ -75,13 +79,14 @@ int	main(int argc, char **argv)
 	t_shared	shared;
 
 	if (argc != 5 && argc != 6)
-		return (1);
+		return (EXIT_FAILURE);
 	if (init_shared(&shared, &argv[1]))
-		return (1);
+		return (EXIT_FAILURE);
 	if (philo(&shared))
-		return (1);
-	clean_shared(&shared);
-	return (0);
+		return (EXIT_FAILURE);
+	if (clean_shared(&shared))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 /*

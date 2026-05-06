@@ -12,6 +12,13 @@
 
 #include "philo.h"
 
+void	flag_up(t_philo *p)
+{
+	pthread_mutex_lock(&p->shared->flag);
+	p->shared->stop_flag = 1;
+	pthread_mutex_unlock(&p->shared->flag);
+}
+
 int	check_starvation(t_philo *p)
 {
 	long long	pt;
@@ -22,13 +29,6 @@ int	check_starvation(t_philo *p)
 	lmt = p->last_meal_time;
 	pthread_mutex_unlock(&p->meal_log);
 	return (pt - lmt >= p->shared->time_to_die);
-}
-
-void	flag_up(t_philo *p)
-{
-	pthread_mutex_lock(&p->shared->flag);
-	p->shared->stop_flag = 1;
-	pthread_mutex_unlock(&p->shared->flag);
 }
 
 int	check_termination(t_philo *p)
