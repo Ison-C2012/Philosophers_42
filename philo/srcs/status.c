@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:26:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/10 18:55:23 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/11 02:31:04 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	print_status(t_philo *p, char *s)
 void	eating(t_philo *p)
 {
 	p->status = EATING;
+
 	print_status(p, "is eating");
 	pthread_mutex_lock(&p->meal_mutex);
 	p->last_meal_time = get_elapsed_time(p);

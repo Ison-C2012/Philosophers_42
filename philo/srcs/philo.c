@@ -6,11 +6,40 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/10 20:35:03 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/11 02:14:33 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*philo_routine(void *p)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)p;
+	if (philo->shared->nb_philo == 1)
+		return (solo_philo(philo));
+	if (philo->id % 2)
+		usleep(1000);
+	while (1)
+	{
+		if (check_stop(philo))
+			break ;
+		thinking(philo);
+		take_forks(philo);
+		if (check_stop(philo))
+		{
+			put_forks(philo);
+			break ;
+		}
+		eating(philo);
+		put_forks(philo);
+		if (check_stop(philo))
+			break ;
+		sleeping(philo);
+	}
+	return (NULL);
+}
 
 int	init_philo(t_philo *philos, t_shared *shared)
 {
@@ -34,20 +63,6 @@ int	init_philo(t_philo *philos, t_shared *shared)
 			destroy_mutex_philo(philos, i);
 			return (EXIT_FAILURE);
 		}
-		i++;
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	join_philo(t_philo *philos, int nb)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb)
-	{
-		if (pthread_join(philos[i].th, NULL))
-			return (EXIT_FAILURE);
 		i++;
 	}
 	return (EXIT_SUCCESS);

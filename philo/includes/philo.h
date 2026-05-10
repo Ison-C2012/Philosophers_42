@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/10 20:33:42 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/11 02:30:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,14 @@ int			valid_value(t_shared *shared);
 
 int			philo(t_shared *shared);
 
-void		*philo_routine(void *p);
 bool		check_stop(t_philo *p);
 void		*solo_philo(t_philo *philo);
+int			join_philo(t_philo *philos, int nb);
 int			destroy_mutex_philo(t_philo *philos, int i);
 
 int			waiter(t_philo *philos);
 void		*waiter_routine(void *p);
+int			check_starvation(t_philo *p);
 void		flag_up(t_philo *p);
 
 void		take_forks(t_philo *p);
