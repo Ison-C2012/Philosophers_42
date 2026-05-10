@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:02:51 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 22:45:57 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/06 23:32:04 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_number(char *str)
 {
-	if (*str == '-')
+	if (*str == '-' || *str == '+')
 		str++;
 	while (*str)
 	{
@@ -36,13 +36,17 @@ int	is_numbers(char **av)
 	return (0);
 }
 
-int	valid_value(t_shared *shared)
+int	is_valid_args(t_arg *args)
 {
-	if (shared->nb_philo < 0 || shared->time_to_die < 0)
-		return (1);
-	if (shared->time_to_eat < 0 || shared->time_to_sleep < 0)
-		return (1);
-	if (shared->nb_must_eat < 0)
-		return (1);
-	return (0);
+	if (args->nb_philo <= 0)
+		return (EXIT_FAILURE);
+	if (args->time_to_die <= 0)
+		return (EXIT_FAILURE);
+	if (args->time_to_eat <= 0)
+		return (EXIT_FAILURE);
+	if (args->time_to_sleep <= 0)
+		return (EXIT_FAILURE);
+	if (args->nb_must_eat < 0)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

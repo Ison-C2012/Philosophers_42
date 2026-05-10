@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/05 21:56:51 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/07 00:37:10 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@
 # define THINKING 2
 # define DIED 3
 
+typedef struct s_arg
+{
+	int			nb_philo;
+	int			time_to_die;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			nb_must_eat;
+	long long	time_of_beginning;
+}	t_arg;
+
 typedef struct s_shared
 {
-	int				nb_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				nb_must_eat;
-	long long		time_of_beginning;
 	int				stop_flag;
 	pthread_mutex_t	flag;
 	pthread_mutex_t	print;
@@ -47,9 +51,10 @@ typedef struct s_philo
 	int				status;
 	int				nb_to_eat;
 	long long		last_meal_time;
+	t_arg			args;
 	t_shared		*shared;
 	pthread_t		th;
-	pthread_mutex_t	meal_log;
+	pthread_mutex_t	eat;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	t_philo;
@@ -57,9 +62,12 @@ typedef struct s_philo
 int			ft_atoi(const char *nptr);
 int			ft_isdigit(char c);
 int			is_numbers(char **av);
-int			valid_value(t_shared *shared);
+int			is_valid_args(t_arg *args);
 
-int			philo(t_shared *shared);
+int			destroy_mutexes(pthread_mutex_t *mutexes, int end);
+int			init_mutexes(pthread_mutex_t *mutexes, int nb);
+
+int			philo(t_shared *shared, t_arg *args);
 
 bool		check_stop(t_philo *p);
 void		*solo_philo(t_philo *philo);
