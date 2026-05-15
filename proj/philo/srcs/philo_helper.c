@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/15 23:06:15 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 00:03:19 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	set_start(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->start);
 	philo->shared->thread_created++;
+	if (philo->id == philo->shared->nb_philo)
+		philo->shared->time_of_beginning = get_time_ms();
 	pthread_mutex_unlock(&philo->shared->start);
 	while (1)
 	{
@@ -51,12 +53,6 @@ void	set_start(t_philo *philo)
 		usleep(100);
 	}
 	pthread_mutex_unlock(&philo->shared->start);
-	if (philo->id == 1)
-	{
-		pthread_mutex_lock(&philo->shared->start);
-		philo->shared->time_of_beginning = get_time_ms();
-		pthread_mutex_unlock(&philo->shared->start);
-	}
 }
 
 int	destroy_mutex_philo(t_philo *philos, int i)
