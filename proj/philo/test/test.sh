@@ -1,7 +1,7 @@
 #!/bin/bash
 
 count=0
-readonly MAX_TRY=20
+readonly MAX_TRY=10
 
 while true
 do
