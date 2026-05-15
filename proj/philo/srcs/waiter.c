@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/11 02:32:12 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/11 16:06:52 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_starvation(t_philo *p)
 	pthread_mutex_lock(&p->meal_mutex);
 	lmt = p->last_meal_time;
 	pthread_mutex_unlock(&p->meal_mutex);
-	return (pt - lmt >= (long long)p->shared->time_to_die);
+	return (pt - lmt >= p->shared->time_to_die);
 }
 
 int	check_termination(t_philo *p)
@@ -65,6 +65,7 @@ void	*waiter_routine(void *p)
 		{
 			if (check_starvation(&philos[i]))
 			{
+				flag_up(p);
 				died(&philos[i]);
 				return (NULL);
 			}

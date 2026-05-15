@@ -15,9 +15,10 @@ SRCS	:= 	main.c \
 			ft_atoi.c \
 			philo.c \
 			philo_helper.c \
+			waiter.c \
 			fork.c \
 			status.c \
-			waiter.c \
+			print.c \
 			time.c
 OBJS	:= $(SRCS:%.c=$(OBJDIR)/%.o)
 

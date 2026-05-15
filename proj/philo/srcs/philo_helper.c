@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/11 02:14:12 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:06:15 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,31 @@ void	*solo_philo(t_philo *philo)
 	{
 		if (check_stop(philo))
 			break ;
+		usleep(1000);
 	}
 	return (NULL);
+}
+
+void	set_start(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->shared->start);
+	philo->shared->thread_created++;
+	pthread_mutex_unlock(&philo->shared->start);
+	while (1)
+	{
+		pthread_mutex_lock(&philo->shared->start);
+		if (philo->shared->thread_created == philo->shared->nb_philo)
+			break ;
+		pthread_mutex_unlock(&philo->shared->start);
+		usleep(100);
+	}
+	pthread_mutex_unlock(&philo->shared->start);
+	if (philo->id == 1)
+	{
+		pthread_mutex_lock(&philo->shared->start);
+		philo->shared->time_of_beginning = get_time_ms();
+		pthread_mutex_unlock(&philo->shared->start);
+	}
 }
 
 int	destroy_mutex_philo(t_philo *philos, int i)

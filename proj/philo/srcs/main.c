@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/10 19:48:36 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/15 22:14:00 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,21 @@ int	init_mutex(t_shared *shared)
 		}
 		i++;
 	}
+	if (pthread_mutex_init(&shared->start, NULL))
+	{
+		destroy_mutex(shared->forks, i);
+		return (EXIT_FAILURE);
+	}
 	if (pthread_mutex_init(&shared->flag, NULL))
 	{
 		destroy_mutex(shared->forks, i);
+		pthread_mutex_destroy(&shared->start);
 		return (EXIT_FAILURE);
 	}
 	if (pthread_mutex_init(&shared->print, NULL))
 	{
 		destroy_mutex(shared->forks, i);
+		pthread_mutex_destroy(&shared->start);
 		pthread_mutex_destroy(&shared->print);
 		return (EXIT_FAILURE);
 	}
@@ -50,18 +57,19 @@ int	init_mutex(t_shared *shared)
 int	init_shared(t_shared *shared, char **av)
 {
 	if (is_numbers(&av[1]))
-		return (1);
+		return (err_msg(), EXIT_FAILURE);
 	shared->nb_philo = ft_atoi(av[0]);
-	shared->time_to_die = ft_atoi(av[1]);
-	shared->time_to_eat = ft_atoi(av[2]);
-	shared->time_to_sleep = ft_atoi(av[3]);
+	shared->time_to_die = (long long) ft_atoi(av[1]) * 1000;
+	shared->time_to_eat = (long long) ft_atoi(av[2]) * 1000;
+	shared->time_to_sleep = (long long) ft_atoi(av[3]) * 1000;
 	if (av[4] == NULL)
 		shared->nb_must_eat = 0;
 	else
 		shared->nb_must_eat = ft_atoi(av[4]);
 	if (valid_value(shared))
-		return (EXIT_FAILURE);
+		return (err_msg(), EXIT_FAILURE);
 	shared->time_of_beginning = get_time_ms();
+	shared->thread_created = 0;
 	shared->stop_flag = 0;
 	shared->forks = (pthread_mutex_t *)
 		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
@@ -87,6 +95,8 @@ int	clean_shared(t_shared *shared)
 		i++;
 	}
 	free(shared->forks);
+	if (pthread_mutex_destroy(&shared->start))
+		return (EXIT_FAILURE);
 	if (pthread_mutex_destroy(&shared->flag))
 		return (EXIT_FAILURE);
 	if (pthread_mutex_destroy(&shared->print))
@@ -102,23 +112,12 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (init_shared(&shared, &argv[1]))
 		return (EXIT_FAILURE);
+	print_shared(&shared);
 	if (philo(&shared))
 		return (EXIT_FAILURE);
 	if (clean_shared(&shared))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
-/*
-void	print_shared(t_shared *shared)
-{
-	printf("number_of_philosophers=%d\n", shared->nb_philo);
-	printf("time_to_die=%d\n", shared->time_to_die);
-	printf("time_to_eat=%d\n", shared->time_to_eat);
-	printf("time_to_sleep=%d\n", shared->time_to_sleep);
-	printf("number_of_times_each_philosopher_must_eat=%d\n",
-		shared->nb_must_eat);
-}
-*/
 
 /*signal function for Ctrl+C/Ctrl+D to prevent from memory leaks*/

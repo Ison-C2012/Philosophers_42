@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/11 02:14:33 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/15 23:05:37 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	*philo_routine(void *p)
 	philo = (t_philo *)p;
 	if (philo->shared->nb_philo == 1)
 		return (solo_philo(philo));
+	set_start(philo);
 	if (philo->id % 2)
-		usleep(1000);
+		usleep(200);
+		//usleep(1000);
 	while (1)
 	{
 		if (check_stop(philo))
@@ -52,10 +54,7 @@ int	init_philo(t_philo *philos, t_shared *shared)
 		philos[i].status = THINKING;
 		philos[i].shared = shared;
 		philos[i].left_fork = &shared->forks[i];
-		if (i > 0)
-			philos[i].right_fork = &shared->forks[i - 1];
-		else
-			philos[i].right_fork = &shared->forks[shared->nb_philo - 1];
+		philos[i].right_fork = &shared->forks[(i + 1) % shared->nb_philo];
 		philos[i].nb_to_eat = 0;
 		philos[i].last_meal_time = get_elapsed_time(philos);
 		if (pthread_mutex_init(&philos[i].meal_mutex, NULL))
