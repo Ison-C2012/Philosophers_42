@@ -6,13 +6,13 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 10:30:54 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:43:37 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_shared(t_shared *shared, char **av)
+static int	init_shared(t_shared *shared, char **av)
 {
 	if (is_numbers(&av[1]))
 		return (err_msg(), EXIT_FAILURE);
@@ -41,7 +41,7 @@ int	init_shared(t_shared *shared, char **av)
 	return (EXIT_SUCCESS);
 }
 
-int	clean_shared(t_shared *shared)
+static int	clean_shared(t_shared *shared)
 {
 	int	exit_code;
 

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 00:03:19 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:40:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,37 +22,6 @@ bool	check_stop(t_philo *p)
 	}
 	pthread_mutex_unlock(&p->shared->flag);
 	return (false);
-}
-
-void	*solo_philo(t_philo *philo)
-{
-	print_status(philo, "is thinking");
-	print_status(philo, "has taken a fork");
-	while (1)
-	{
-		if (check_stop(philo))
-			break ;
-		usleep(1000);
-	}
-	return (NULL);
-}
-
-void	set_start(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->shared->start);
-	philo->shared->thread_created++;
-	if (philo->id == philo->shared->nb_philo)
-		philo->shared->time_of_beginning = get_time_ms();
-	pthread_mutex_unlock(&philo->shared->start);
-	while (1)
-	{
-		pthread_mutex_lock(&philo->shared->start);
-		if (philo->shared->thread_created == philo->shared->nb_philo)
-			break ;
-		pthread_mutex_unlock(&philo->shared->start);
-		usleep(100);
-	}
-	pthread_mutex_unlock(&philo->shared->start);
 }
 
 int	destroy_mutex_philo(t_philo *philos, int i)

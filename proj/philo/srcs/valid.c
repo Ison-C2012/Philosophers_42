@@ -6,13 +6,13 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:02:51 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/10 19:35:59 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:47:59 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	is_number(char *str)
+static int	is_number(char *str)
 {
 	if (*str == '-' || *str == '+')
 		str++;

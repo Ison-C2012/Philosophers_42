@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 10:34:08 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:50:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,14 @@ int			philo(t_shared *shared);
 
 //philo_routine.c
 void		*philo_routine(void *p);
-void		*philo_odd_routine(t_philo *philo);
-void		*philo_even_routine(t_philo *philo);
 
 //philo_helpher.c
 bool		check_stop(t_philo *p);
-void		*solo_philo(t_philo *philo);
-void		set_start(t_philo *philo);
 int			join_philo(t_philo *philos, int nb);
 int			destroy_mutex_philo(t_philo *philos, int i);
 
 //waiter.c
 int			waiter(t_philo *philos);
-void		*waiter_routine(void *p);
-int			check_starvation(t_philo *p);
 void		flag_up(t_philo *p);
 
 //fork.c

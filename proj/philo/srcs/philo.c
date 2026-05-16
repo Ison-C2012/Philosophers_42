@@ -6,13 +6,26 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/16 10:34:43 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:46:21 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_philo(t_philo *philos, t_shared *shared)
+static int	clean_philo(t_philo *philos, int nb)
+{
+	int	exit_code;
+
+	exit_code = EXIT_SUCCESS;
+	if (join_philo(philos, nb))
+		exit_code = EXIT_FAILURE;
+	if (destroy_mutex_philo(philos, nb))
+		exit_code = EXIT_FAILURE;
+	free(philos);
+	return (exit_code);
+}
+
+static int	init_philo(t_philo *philos, t_shared *shared)
 {
 	int	i;
 
@@ -36,7 +49,7 @@ int	init_philo(t_philo *philos, t_shared *shared)
 	return (EXIT_SUCCESS);
 }
 
-int	create_philo(t_philo *philos, t_shared *shared)
+static int	create_philo(t_philo *philos, t_shared *shared)
 {
 	int	i;
 
@@ -57,19 +70,6 @@ int	create_philo(t_philo *philos, t_shared *shared)
 	return (EXIT_SUCCESS);
 }
 
-int	clean_philo(t_philo *philos, int nb)
-{
-	int	exit_code;
-
-	exit_code = EXIT_SUCCESS;
-	if (join_philo(philos, nb))
-		exit_code = EXIT_FAILURE;
-	if (destroy_mutex_philo(philos, nb))
-		exit_code = EXIT_FAILURE;
-	free(philos);
-	return (exit_code);
-}
-
 int	philo(t_shared *shared)
 {
 	t_philo		*philos;
@@ -84,9 +84,7 @@ int	philo(t_shared *shared)
 	}
 	if (waiter(philos))
 	{
-		join_philo(philos, shared->nb_philo);
-		destroy_mutex_philo(philos, shared->nb_philo);
-		free(philos);
+		clean_philo(philos, shared->nb_philo);
 		return (EXIT_FAILURE);
 	}
 	if (clean_philo(philos, shared->nb_philo))
