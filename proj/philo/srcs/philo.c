@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/16 10:46:21 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 14:36:41 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	init_philo(t_philo *philos, t_shared *shared)
 		philos[i].left_fork = &shared->forks[i];
 		philos[i].right_fork = &shared->forks[(i + 1) % shared->nb_philo];
 		philos[i].nb_to_eat = 0;
+		philos[i].ready_to_eat = 0;
 		philos[i].last_meal_time = get_elapsed_time(philos);
 		if (pthread_mutex_init(&philos[i].meal_mutex, NULL))
 		{

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 10:50:06 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 14:40:00 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_philo
 	int				id;
 	int				status;
 	int				nb_to_eat;
+	int				ready_to_eat;
 	long long		last_meal_time;
 	t_shared		*shared;
 	pthread_t		th;
@@ -76,12 +77,13 @@ void		*philo_routine(void *p);
 
 //philo_helpher.c
 bool		check_stop(t_philo *p);
+int			wait(t_philo *philo);
 int			join_philo(t_philo *philos, int nb);
 int			destroy_mutex_philo(t_philo *philos, int i);
 
 //waiter.c
 int			waiter(t_philo *philos);
-void		flag_up(t_philo *p);
+void		set_flag(t_philo *p);
 
 //fork.c
 void		take_forks(t_philo *p);

@@ -37,6 +37,7 @@ static void	*philo_odd_routine(t_philo *philo)
 	while (!check_stop(philo))
 	{
 		thinking(philo);
+		wait(philo);
 		take_forks(philo);
 		if (check_stop(philo))
 		{

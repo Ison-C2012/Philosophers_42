@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 10:40:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 14:35:40 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ bool	check_stop(t_philo *p)
 	}
 	pthread_mutex_unlock(&p->shared->flag);
 	return (false);
+}
+
+int	wait(t_philo *philo)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&philo->meal_mutex);
+		if (philo->ready_to_eat)
+			break ;
+		pthread_mutex_unlock(&philo->meal_mutex);
+		usleep(1000);
+	}
+	pthread_mutex_unlock(&philo->meal_mutex);
 }
 
 int	destroy_mutex_philo(t_philo *philos, int i)
