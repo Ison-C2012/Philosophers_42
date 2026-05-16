@@ -6,42 +6,11 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/15 23:05:37 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:34:43 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	*philo_routine(void *p)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)p;
-	if (philo->shared->nb_philo == 1)
-		return (solo_philo(philo));
-	set_start(philo);
-	if (philo->id % 2)
-		usleep(200);
-		//usleep(1000);
-	while (1)
-	{
-		if (check_stop(philo))
-			break ;
-		thinking(philo);
-		take_forks(philo);
-		if (check_stop(philo))
-		{
-			put_forks(philo);
-			break ;
-		}
-		eating(philo);
-		put_forks(philo);
-		if (check_stop(philo))
-			break ;
-		sleeping(philo);
-	}
-	return (NULL);
-}
 
 int	init_philo(t_philo *philos, t_shared *shared)
 {
@@ -90,15 +59,15 @@ int	create_philo(t_philo *philos, t_shared *shared)
 
 int	clean_philo(t_philo *philos, int nb)
 {
+	int	exit_code;
+
+	exit_code = EXIT_SUCCESS;
 	if (join_philo(philos, nb))
-	{
-		destroy_mutex_philo(philos, nb);
-		free(philos);
-		return (EXIT_FAILURE);
-	}
-	destroy_mutex_philo(philos, nb);
+		exit_code = EXIT_FAILURE;
+	if (destroy_mutex_philo(philos, nb))
+		exit_code = EXIT_FAILURE;
 	free(philos);
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }
 
 int	philo(t_shared *shared)

@@ -13,7 +13,9 @@ OBJDIR := objs
 SRCS	:= 	main.c \
 			valid.c \
 			ft_atoi.c \
+			mutex.c \
 			philo.c \
+			philo_routine.c \
 			philo_helper.c \
 			waiter.c \
 			fork.c \

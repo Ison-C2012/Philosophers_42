@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/15 23:06:36 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:34:08 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,17 @@ int			ft_isdigit(char c);
 int			is_numbers(char **av);
 int			valid_value(t_shared *shared);
 
+//mutex.c
+int			init_mutex(t_shared *shared);
+int			destroy_mutex(pthread_mutex_t *mutex, int i);
+
 //philo.c
 int			philo(t_shared *shared);
+
+//philo_routine.c
+void		*philo_routine(void *p);
+void		*philo_odd_routine(t_philo *philo);
+void		*philo_even_routine(t_philo *philo);
 
 //philo_helpher.c
 bool		check_stop(t_philo *p);

@@ -6,53 +6,11 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/15 22:14:00 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/16 10:30:54 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	destroy_mutex(pthread_mutex_t *mutex, int i)
-{
-	while (i--)
-		pthread_mutex_destroy(&mutex[i]);
-	return (EXIT_SUCCESS);
-}
-
-int	init_mutex(t_shared *shared)
-{
-	int	i;
-
-	i = 0;
-	while (i < shared->nb_philo)
-	{
-		if (pthread_mutex_init(&shared->forks[i], NULL))
-		{
-			destroy_mutex(shared->forks, i);
-			return (EXIT_FAILURE);
-		}
-		i++;
-	}
-	if (pthread_mutex_init(&shared->start, NULL))
-	{
-		destroy_mutex(shared->forks, i);
-		return (EXIT_FAILURE);
-	}
-	if (pthread_mutex_init(&shared->flag, NULL))
-	{
-		destroy_mutex(shared->forks, i);
-		pthread_mutex_destroy(&shared->start);
-		return (EXIT_FAILURE);
-	}
-	if (pthread_mutex_init(&shared->print, NULL))
-	{
-		destroy_mutex(shared->forks, i);
-		pthread_mutex_destroy(&shared->start);
-		pthread_mutex_destroy(&shared->print);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
 
 int	init_shared(t_shared *shared, char **av)
 {
@@ -85,23 +43,19 @@ int	init_shared(t_shared *shared, char **av)
 
 int	clean_shared(t_shared *shared)
 {
-	int	i;
+	int	exit_code;
 
-	i = 0;
-	while (i < shared->nb_philo)
-	{
-		if (pthread_mutex_destroy(&shared->forks[i]))
-			return (EXIT_FAILURE);
-		i++;
-	}
+	exit_code = EXIT_SUCCESS;
+	if (destroy_mutex(shared->forks, shared->nb_philo))
+		exit_code = EXIT_FAILURE;
 	free(shared->forks);
 	if (pthread_mutex_destroy(&shared->start))
-		return (EXIT_FAILURE);
+		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_destroy(&shared->flag))
-		return (EXIT_FAILURE);
+		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_destroy(&shared->print))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		exit_code = EXIT_FAILURE;
+	return (exit_code);
 }
 
 int	main(int argc, char **argv)
@@ -112,7 +66,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if (init_shared(&shared, &argv[1]))
 		return (EXIT_FAILURE);
-	print_shared(&shared);
 	if (philo(&shared))
 		return (EXIT_FAILURE);
 	if (clean_shared(&shared))
@@ -120,4 +73,5 @@ int	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
+//	print_shared(&shared);
 /*signal function for Ctrl+C/Ctrl+D to prevent from memory leaks*/
