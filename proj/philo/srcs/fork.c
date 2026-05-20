@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 21:58:38 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 22:03:50 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/20 23:01:18 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,16 @@ int	right_fork_nb(t_philo *p)
 
 void	take_forks(t_philo *p)
 {
-	take_a_fork(p, right_fork_nb(p));
-	take_a_fork(p, left_fork_nb(p));
+	if (p->id == 1)
+	{
+		take_a_fork(p, left_fork_nb(p));
+		take_a_fork(p, right_fork_nb(p));
+	}
+	else
+	{
+		take_a_fork(p, right_fork_nb(p));
+		take_a_fork(p, left_fork_nb(p));
+	}
 }
 
 void	put_forks(t_philo *p)
