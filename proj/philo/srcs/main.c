@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 10:43:37 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/20 21:08:56 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,20 @@ static int	init_shared(t_shared *shared, char **av)
 	shared->time_of_beginning = get_time_ms();
 	shared->thread_created = 0;
 	shared->stop_flag = 0;
+	shared->fork_status = (int *)malloc(sizeof(int) * shared->nb_philo);
+	if (shared->fork_status == NULL)
+		return (EXIT_FAILURE);
+	int i = shared->nb_philo;
+	while (i--)
+		shared->fork_status[i] = AVAILABLE;
 	shared->forks = (pthread_mutex_t *)
 		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
 	if (shared->forks == NULL)
-		return (EXIT_FAILURE);
+		return (free(shared->fork_status), EXIT_FAILURE);
+	shared->fork_mutex = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+	if (shared->fork_mutex == NULL)
+		return (free(shared->forks), EXIT_FAILURE);
 	if (init_mutex(shared))
 	{
 		free(shared->forks);
@@ -46,9 +56,13 @@ static int	clean_shared(t_shared *shared)
 	int	exit_code;
 
 	exit_code = EXIT_SUCCESS;
+	free(shared->fork_status);
 	if (destroy_mutex(shared->forks, shared->nb_philo))
 		exit_code = EXIT_FAILURE;
 	free(shared->forks);
+	if (destroy_mutex(shared->fork_mutex, shared->nb_philo))
+		exit_code = EXIT_FAILURE;
+	free(shared->fork_mutex);
 	if (pthread_mutex_destroy(&shared->start))
 		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_destroy(&shared->flag))

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:27:09 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 01:46:45 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/20 20:50:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ long long	get_time_ms(void)
 	return ((long long) tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
-long long	get_elapsed_time(t_philo *p)
+long long	get_elapsed_time(t_shared *shared)
 {
 	long long	time_of_beginning;
 
-	pthread_mutex_lock(&p->shared->start);
-	time_of_beginning = p->shared->time_of_beginning;
-	pthread_mutex_unlock(&p->shared->start);
+	pthread_mutex_lock(&shared->start);
+	time_of_beginning = shared->time_of_beginning;
+	pthread_mutex_unlock(&shared->start);
 	return ((get_time_ms() - time_of_beginning));
 }

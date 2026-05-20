@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 15:00:36 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/11 16:41:09 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/20 20:53:42 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_died(t_philo *p, char *s)
 {
 	pthread_mutex_lock(&p->shared->print);
-	printf("%lld %d %s\n", get_elapsed_time(p) / 1000, p->id, s);
+	printf("%lld %d %s\n", get_elapsed_time(p->shared) / 1000, p->id, s);
 	pthread_mutex_unlock(&p->shared->print);
 }
 
@@ -30,7 +30,7 @@ void	print_status(t_philo *p, char *s)
 		return ;
 	}
 	pthread_mutex_unlock(&p->shared->flag);
-	printf("%lld %d %s\n", get_elapsed_time(p) / 1000, p->id, s);
+	printf("%lld %d %s\n", get_elapsed_time(p->shared) / 1000, p->id, s);
 	pthread_mutex_unlock(&p->shared->print);
 }
 

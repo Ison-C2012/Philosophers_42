@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/16 14:40:00 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/20 21:23:24 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+#define AVAILABLE 0
+#define TAKEN 1
+
 # define EATING 0
 # define SLEEPING 1
 # define THINKING 2
@@ -35,12 +38,14 @@ typedef struct s_shared
 	long long		time_to_sleep;
 	int				nb_must_eat;
 	long long		time_of_beginning;
-	int				thread_created;
-	int				stop_flag;
-	pthread_mutex_t	start;
-	pthread_mutex_t	flag;
-	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*fork_mutex;
+	int				*fork_status;
+	pthread_mutex_t	start;
+	int				thread_created;
+	pthread_mutex_t	flag;
+	int				stop_flag;
+	pthread_mutex_t	print;
 }	t_shared;
 
 typedef struct s_philo
@@ -83,7 +88,6 @@ int			destroy_mutex_philo(t_philo *philos, int i);
 
 //waiter.c
 int			waiter(t_philo *philos);
-void		set_flag(t_philo *p);
 
 //fork.c
 void		take_forks(t_philo *p);
@@ -103,6 +107,6 @@ void		print_died(t_philo *p, char *s);
 
 //time.c
 long long	get_time_ms(void);
-long long	get_elapsed_time(t_philo *p);
+long long	get_elapsed_time(t_shared *shared);
 
 #endif
