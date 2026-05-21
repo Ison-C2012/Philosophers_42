@@ -1,6 +1,7 @@
 #!/bin/bash
 
 count=0
+dead_count=0
 readonly MAX_TRY=10
 
 if [ $# -eq 0 ]
@@ -22,15 +23,17 @@ do
 
 	if grep -q "died" log
 	then
-		echo -n "result: "
-		echo "died at try $count"
-		break
+		deat_count=$((deat_count + 1))
+		#echo -n "result: "
+		#echo "died at try $count"
+		#break
 	fi
 
 	if (( count == MAX_TRY ))
 	then
 		echo -n "result: "
-		echo "No philosopher died with $count try"
+		echo "$dead_count philosophers died with $count try"
+		#echo "No philosopher died with $count try"
 		break
 	fi
 done

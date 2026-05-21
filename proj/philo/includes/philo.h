@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/21 23:13:40 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:45:23 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ int			philo(t_shared *shared);
 void		*philo_routine(void *p);
 
 //philo_helpher.c
-bool		check_stop(t_philo *p);
-int			wait(t_philo *philo);
 int			join_philo(t_philo *philos, int nb);
 int			destroy_mutex_philo(t_philo *philos, int i);
 

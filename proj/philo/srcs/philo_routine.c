@@ -6,13 +6,13 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:32:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/21 18:29:18 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:49:21 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_stop(t_philo *p)
+static bool	check_stop(t_philo *p)
 {
 	pthread_mutex_lock(&p->shared->flag);
 	if (p->shared->stop_flag)
