@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:24:16 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 20:48:12 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:28:51 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 int	destroy_mutex(pthread_mutex_t *mutex, int i)
 {
+	int	exit_code;
+
+	exit_code = EXIT_SUCCESS;
 	while (i--)
-		pthread_mutex_destroy(&mutex[i]);
-	return (EXIT_SUCCESS);
+		if (pthread_mutex_destroy(&mutex[i]))
+			exit_code = EXIT_FAILURE;
+	return (exit_code);
 }
 
-static int	init_forks(pthread_mutex_t *forks, int nb)
+static int	init_forks_mutex(pthread_mutex_t *forks, int nb)
 {
 	int	i;
 
@@ -38,25 +42,25 @@ static int	init_forks(pthread_mutex_t *forks, int nb)
 
 int	init_mutex(t_shared *shared)
 {
-	if (init_forks(shared->forks, shared->nb_philo) && init_forks(shared->fork_mutex, shared->nb_philo))
-		return (EXIT_FAILURE);
+	int	exit_code;
+
+	exit_code = EXIT_SUCCESS;
+	if (init_forks_mutex(shared->forks, shared->nb_philo))
+		exit_code = EXIT_FAILURE;
+	if (init_forks_mutex(shared->fork_mutex, shared->nb_philo))
+		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_init(&shared->start, NULL))
-	{
-		destroy_mutex(shared->forks, shared->nb_philo);
-		return (EXIT_FAILURE);
-	}
+		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_init(&shared->flag, NULL))
-	{
-		destroy_mutex(shared->forks, shared->nb_philo);
-		pthread_mutex_destroy(&shared->start);
-		return (EXIT_FAILURE);
-	}
+		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_init(&shared->print, NULL))
+		exit_code = EXIT_FAILURE;
+	if (exit_code == EXIT_FAILURE)
 	{
 		destroy_mutex(shared->forks, shared->nb_philo);
+		destroy_mutex(shared->fork_mutex, shared->nb_philo);
 		pthread_mutex_destroy(&shared->start);
 		pthread_mutex_destroy(&shared->print);
-		return (EXIT_FAILURE);
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }

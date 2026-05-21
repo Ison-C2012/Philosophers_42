@@ -6,44 +6,37 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 20:48:33 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:31:20 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_stop(t_philo *p)
-{
-	pthread_mutex_lock(&p->shared->flag);
-	if (p->shared->stop_flag)
-	{
-		pthread_mutex_unlock(&p->shared->flag);
-		return (true);
-	}
-	pthread_mutex_unlock(&p->shared->flag);
-	return (false);
-}
-
 int	destroy_mutex_philo(t_philo *philos, int i)
 {
+	int	exit_code;
+
+	exit_code = EXIT_SUCCESS;
 	while (i--)
 	{
 		if (pthread_mutex_destroy(&philos[i].meal_mutex))
-			return (EXIT_FAILURE);
+			exit_code = EXIT_FAILURE;
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }
 
 int	join_philo(t_philo *philos, int nb)
 {
 	int	i;
+	int	exit_code;
 
 	i = 0;
+	exit_code = EXIT_SUCCESS;
 	while (i < nb)
 	{
 		if (pthread_join(philos[i].th, NULL))
-			return (EXIT_FAILURE);
+			exit_code = EXIT_FAILURE;
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }

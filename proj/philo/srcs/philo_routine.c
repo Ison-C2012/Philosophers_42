@@ -3,29 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   philo_routine.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:32:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 20:37:15 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:29:18 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+bool	check_stop(t_philo *p)
+{
+	pthread_mutex_lock(&p->shared->flag);
+	if (p->shared->stop_flag)
+	{
+		pthread_mutex_unlock(&p->shared->flag);
+		return (true);
+	}
+	pthread_mutex_unlock(&p->shared->flag);
+	return (false);
+}
+
 static void	set_start(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->start);
 	philo->shared->thread_created++;
-	if (philo->id == philo->shared->nb_philo)
-		philo->shared->time_of_beginning = get_time_ms();
 	pthread_mutex_unlock(&philo->shared->start);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->shared->start);
 		if (philo->shared->thread_created == philo->shared->nb_philo)
+		{
+			if (philo->id == philo->shared->nb_philo)
+				philo->shared->time_of_beginning = get_time_ms();
 			break ;
+		}
 		pthread_mutex_unlock(&philo->shared->start);
-		usleep(100);
+		usleep(10);
 	}
 	pthread_mutex_unlock(&philo->shared->start);
 }

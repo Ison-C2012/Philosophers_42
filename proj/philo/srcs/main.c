@@ -6,11 +6,32 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 21:08:56 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 18:05:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int	init_fork(t_shared *shared)
+{
+	int	i;
+
+	shared->forks = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+	if (shared->forks == NULL)
+		return (EXIT_FAILURE);
+	shared->fork_mutex = (pthread_mutex_t *)
+		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
+	if (shared->fork_mutex == NULL)
+		return (free(shared->forks), EXIT_FAILURE);
+	shared->fork_status = (int *)malloc(sizeof(int) * shared->nb_philo);
+	if (shared->fork_status == NULL)
+		return (free(shared->forks), free(shared->fork_mutex), EXIT_FAILURE);
+	i = shared->nb_philo;
+	while (i--)
+		shared->fork_status[i] = AVAILABLE;
+	return (EXIT_SUCCESS);
+}
 
 static int	init_shared(t_shared *shared, char **av)
 {
@@ -29,23 +50,13 @@ static int	init_shared(t_shared *shared, char **av)
 	shared->time_of_beginning = get_time_ms();
 	shared->thread_created = 0;
 	shared->stop_flag = 0;
-	shared->fork_status = (int *)malloc(sizeof(int) * shared->nb_philo);
-	if (shared->fork_status == NULL)
+	if (init_fork(shared))
 		return (EXIT_FAILURE);
-	int i = shared->nb_philo;
-	while (i--)
-		shared->fork_status[i] = AVAILABLE;
-	shared->forks = (pthread_mutex_t *)
-		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
-	if (shared->forks == NULL)
-		return (free(shared->fork_status), EXIT_FAILURE);
-	shared->fork_mutex = (pthread_mutex_t *)
-		malloc(sizeof(pthread_mutex_t) * shared->nb_philo);
-	if (shared->fork_mutex == NULL)
-		return (free(shared->forks), EXIT_FAILURE);
 	if (init_mutex(shared))
 	{
 		free(shared->forks);
+		free(shared->fork_mutex);
+		free(shared->fork_status);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

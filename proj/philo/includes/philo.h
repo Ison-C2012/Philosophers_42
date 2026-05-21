@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 21:23:24 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 23:13:40 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-#define AVAILABLE 0
-#define TAKEN 1
-
+# define AVAILABLE 0
+# define TAKEN 1
 # define EATING 0
 # define SLEEPING 1
 # define THINKING 2
@@ -51,7 +50,6 @@ typedef struct s_shared
 typedef struct s_philo
 {
 	int				id;
-	int				status;
 	int				nb_to_eat;
 	int				ready_to_eat;
 	long long		last_meal_time;

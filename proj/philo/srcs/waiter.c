@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 21:37:09 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/21 17:54:43 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	set_flag(t_shared *shared)
 
 static bool	check_starvation(t_philo *p)
 {
-	int	i;
-	int	nb_philo;
+	int			i;
+	int			nb_philo;
 	long long	pt;
 
 	i = 0;
