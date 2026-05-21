@@ -18,7 +18,7 @@ echo "testing ..."
 
 while true
 do
-	./philo $@ > log 2> err_log
+	./philo $@ > log
 	count=$((count + 1))
 
 	if grep -q "died" log
