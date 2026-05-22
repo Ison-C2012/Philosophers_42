@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:32:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/22 23:10:43 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/23 06:36:45 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	set_start(t_philo *philo)
 		if (philo->shared->thread_created == philo->shared->nb_philo)
 		{
 			if (philo->id == philo->shared->nb_philo)
-				philo->shared->time_of_beginning = get_time_ms();
+				philo->shared->time_of_beginning = get_time_us();
 			break ;
 		}
 		pthread_mutex_unlock(&philo->shared->start);
@@ -66,10 +66,9 @@ void	*philo_routine(void *p)
 		return (philo_solo_routine(philo));
 	set_start(philo);
 	if (philo->id % 2)
-		usleep(philo->shared->nb_philo * 50);
+		thinking(philo, philo->shared->time_to_eat);
 	while (!check_stop(philo))
 	{
-		thinking(philo);
 		take_forks(philo);
 		if (check_stop(philo))
 		{
@@ -79,6 +78,7 @@ void	*philo_routine(void *p)
 		eating(philo);
 		put_forks(philo);
 		sleeping(philo);
+		thinking(philo, philo->shared->time_to_think);
 	}
 	return (NULL);
 }

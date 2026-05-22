@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:24:16 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/21 18:28:51 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/23 07:06:10 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ int	init_mutex(t_shared *shared)
 	exit_code = EXIT_SUCCESS;
 	if (init_forks_mutex(shared->forks, shared->nb_philo))
 		exit_code = EXIT_FAILURE;
-	if (init_forks_mutex(shared->fork_mutex, shared->nb_philo))
-		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_init(&shared->start, NULL))
 		exit_code = EXIT_FAILURE;
 	if (pthread_mutex_init(&shared->flag, NULL))
@@ -58,7 +56,6 @@ int	init_mutex(t_shared *shared)
 	if (exit_code == EXIT_FAILURE)
 	{
 		destroy_mutex(shared->forks, shared->nb_philo);
-		destroy_mutex(shared->fork_mutex, shared->nb_philo);
 		pthread_mutex_destroy(&shared->start);
 		pthread_mutex_destroy(&shared->print);
 	}

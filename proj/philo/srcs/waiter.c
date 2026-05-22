@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/22 23:34:44 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/23 07:11:52 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,3 +88,9 @@ int	waiter(t_philo *philos)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
+/*
+	long long timer=get_time_us();
+	loop();
+	printf("\n\n\033[31mloop time: %lld\033[0m\n\n", get_time_us() - timer);
+*/
