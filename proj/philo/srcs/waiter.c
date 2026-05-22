@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/21 17:54:43 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/22 23:34:44 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static bool	check_termination(t_philo *p)
 	int	i;
 	int	nb_philo;
 
+	if (p->shared->nb_must_eat == 0)
+		return (true);
 	i = 0;
 	nb_philo = p[0].shared->nb_philo;
 	while (i < nb_philo)
