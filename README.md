@@ -81,10 +81,6 @@ The following references were used to build understanding of the project and con
 - [Philosophers article by yliu (Qiita)](https://qiita.com/42yliu/items/86d16cdbc584c250ca6e) — A practical walkthrough of the philosophers project, understanding why dead lock must not occur
 - Manual pages for C library functions (`man pthread_create`, `man pthread_mutex_init`, etc.)
 
-### Community
-
-- Discord: `#philosophers` channel on the **42 Tokyo** Discord server — peer discussions and debugging tips
-
 ### Books
 
 - *Concurrency in Go* — Katherine Cox-Buday, O'REILLY Japan, 2018 — conceptual foundation for understanding concurrency patterns especially dead lock and resource starvation
