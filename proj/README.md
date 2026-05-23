@@ -93,7 +93,7 @@ The following references were used to build understanding of the project and con
 
 ### How AI Was Used
 
-**AI tool used:** Gemini 3.5 Flash
+**AI tools used:** Gemini 3.5 Flash, Claude Sonnet 4.6 (Anthropic)
 
 AI assistance was used in the following areas:
 
@@ -102,3 +102,4 @@ AI assistance was used in the following areas:
 - **Code review** — identifying potential race conditions, logic errors, and style improvements
 - **Project interpretation** — clarifying the rules and expected behavior of the dining philosophers simulation
 - **Debugging guidance** — learning how to read and interpret Helgrind (Valgrind) error messages related to thread safety
+- **README creation** — Claude Sonnet 4.6 was used to write and format this README, structuring the content into clear sections with a parameter table, usage examples, and organized resource categories
