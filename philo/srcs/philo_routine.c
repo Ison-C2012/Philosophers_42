@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:32:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/23 06:36:45 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 01:14:44 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	check_stop(t_philo *p)
 	return (false);
 }
 
-static void	set_start(t_philo *philo)
+static void	set_start_to_think(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->shared->start);
 	philo->shared->thread_created++;
@@ -42,6 +42,13 @@ static void	set_start(t_philo *philo)
 		usleep(10);
 	}
 	pthread_mutex_unlock(&philo->shared->start);
+	if (philo->id % 2)
+	{
+		if (philo->shared->nb_philo % 2 && philo->id == 1)
+			thinking(philo, philo->shared->time_to_eat * 2);
+		else
+			thinking(philo, philo->shared->time_to_eat);
+	}
 }
 
 static void	*philo_solo_routine(t_philo *philo)
@@ -64,9 +71,7 @@ void	*philo_routine(void *p)
 	philo = (t_philo *)p;
 	if (philo->shared->nb_philo == 1)
 		return (philo_solo_routine(philo));
-	set_start(philo);
-	if (philo->id % 2)
-		thinking(philo, philo->shared->time_to_eat);
+	set_start_to_think(philo);
 	while (!check_stop(philo))
 	{
 		take_forks(philo);

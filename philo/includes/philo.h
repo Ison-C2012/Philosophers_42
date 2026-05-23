@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/23 07:01:15 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 01:27:21 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+#define BUFFER_TIME 10000
 
 typedef struct s_shared
 {

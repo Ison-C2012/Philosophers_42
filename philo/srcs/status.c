@@ -6,13 +6,11 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:26:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/23 06:59:14 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 01:27:13 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-#define BUFFER_TIME 10000
 
 void	eating(t_philo *p)
 {

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/23 07:11:52 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 01:08:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	*waiter_routine(void *p)
 
 	philos = (t_philo *)p;
 	while ((check_starvation(philos)) && (check_termination(philos)))
-		usleep(1000);
+		usleep(100);
 	return (NULL);
 }
 
