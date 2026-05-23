@@ -25,6 +25,12 @@ The program is given the following parameters at launch:
 
 ### Compilation
 
+First of all:
+
+```bash
+cd philo/
+```
+
 To build the program:
 
 ```bash
