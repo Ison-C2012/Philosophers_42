@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/24 17:26:37 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:28:14 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,23 @@ typedef struct s_shared
 	long long		time_to_think;
 	int				nb_must_eat;
 	long long		time_of_beginning;
+	int				created_thread_nb;
+	int				stop_flag;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	start;
-	int				thread_created;
 	pthread_mutex_t	flag;
-	int				stop_flag;
 	pthread_mutex_t	print;
 }	t_shared;
 
 typedef struct s_philo
 {
 	int				id;
-	int				nb_to_eat;
-	int				ready_to_eat;
+	int				nb_eat;
 	long long		last_meal_time;
 	t_shared		*shared;
 	pthread_t		th;
-	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	meal_nb;
+	pthread_mutex_t	meal_time;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	t_philo;
@@ -57,8 +57,8 @@ int			ft_atoi(const char *nptr);
 int			ft_isdigit(char c);
 
 //valid.c
-int			is_numbers(char **av);
-int			valid_value(t_shared *shared);
+bool		is_positive_numbers(char **av);
+bool		is_overflow(char **av);
 
 //mutex.c
 int			init_mutex(t_shared *shared);

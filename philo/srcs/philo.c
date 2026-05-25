@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/21 23:13:58 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:29:54 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,17 @@ static int	init_philo(t_philo *philos, t_shared *shared)
 		philos[i].shared = shared;
 		philos[i].right_fork = &shared->forks[i];
 		philos[i].left_fork = &shared->forks[(i + 1) % shared->nb_philo];
-		philos[i].nb_to_eat = 0;
-		philos[i].ready_to_eat = 0;
+		philos[i].nb_eat = 0;
 		philos[i].last_meal_time = get_elapsed_time(shared);
-		if (pthread_mutex_init(&philos[i].meal_mutex, NULL))
+		if (pthread_mutex_init(&philos[i].meal_nb, NULL))
 		{
 			destroy_mutex_philo(philos, i);
+			return (EXIT_FAILURE);
+		}
+		if (pthread_mutex_init(&philos[i].meal_time, NULL))
+		{
+			destroy_mutex_philo(philos, i);
+			pthread_mutex_destroy(&philos[i].meal_nb);
 			return (EXIT_FAILURE);
 		}
 		i++;

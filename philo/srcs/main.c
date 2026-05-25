@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/23 07:06:57 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 20:13:57 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	create_fork(t_shared *shared)
 
 static int	init_shared(t_shared *shared, char **av)
 {
-	if (is_numbers(&av[1]))
+	if (!is_positive_numbers(&av[1]) || is_overflow(&av[1]))
 		return (err_msg(), EXIT_FAILURE);
 	shared->nb_philo = ft_atoi(av[0]);
 	shared->time_to_die = (long long) ft_atoi(av[1]) * 1000;
@@ -35,10 +35,8 @@ static int	init_shared(t_shared *shared, char **av)
 		shared->nb_must_eat = 0;
 	else
 		shared->nb_must_eat = ft_atoi(av[4]);
-	if (valid_value(shared))
-		return (err_msg(), EXIT_FAILURE);
 	shared->time_of_beginning = get_time_us();
-	shared->thread_created = 0;
+	shared->created_thread_nb = 0;
 	shared->stop_flag = 0;
 	if (create_fork(shared))
 		return (EXIT_FAILURE);
@@ -69,7 +67,7 @@ int	main(int argc, char **argv)
 	t_shared	shared;
 
 	if (argc != 5 && argc != 6)
-		return (EXIT_FAILURE);
+		return (err_msg(), EXIT_FAILURE);
 	if (init_shared(&shared, &argv[1]))
 		return (EXIT_FAILURE);
 	if (philo(&shared))

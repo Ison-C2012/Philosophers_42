@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 15:26:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/24 17:26:47 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:51:03 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 void	eating(t_philo *p)
 {
 	print_status(p, "is eating");
-	pthread_mutex_lock(&p->meal_mutex);
+	pthread_mutex_lock(&p->meal_time);
 	p->last_meal_time = get_elapsed_time(p->shared);
+	pthread_mutex_unlock(&p->meal_time);
 	ft_usleep(p->shared->time_to_eat, p->shared);
-	p->nb_to_eat++;
-	pthread_mutex_unlock(&p->meal_mutex);
+	pthread_mutex_lock(&p->meal_nb);
+	p->nb_eat++;
+	pthread_mutex_unlock(&p->meal_nb);
 }
 
 void	sleeping(t_philo *p)
@@ -32,6 +34,8 @@ void	sleeping(t_philo *p)
 
 void	thinking(t_philo *p, long long time)
 {
+	if (time - BUFFER_TIME <= 0)
+		return ;
 	print_status(p, "is thinking");
 	ft_usleep(time - BUFFER_TIME, p->shared);
 }

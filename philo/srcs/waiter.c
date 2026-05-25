@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:57:28 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/24 01:08:06 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:51:56 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ static bool	check_starvation(t_philo *p)
 	while (i < nb_philo)
 	{
 		pt = get_elapsed_time(p[i].shared);
-		pthread_mutex_lock(&p[i].meal_mutex);
+		pthread_mutex_lock(&p[i].meal_time);
 		if (pt - p[i].last_meal_time >= p->shared->time_to_die)
 		{
-			pthread_mutex_unlock(&p[i].meal_mutex);
+			pthread_mutex_unlock(&p[i].meal_time);
 			set_flag(p->shared);
 			died(&p[i]);
 			return (false);
 		}
-		pthread_mutex_unlock(&p[i].meal_mutex);
+		pthread_mutex_unlock(&p[i].meal_time);
 		i++;
 	}
 	return (true);
@@ -55,13 +55,13 @@ static bool	check_termination(t_philo *p)
 	nb_philo = p[0].shared->nb_philo;
 	while (i < nb_philo)
 	{
-		pthread_mutex_lock(&p[i].meal_mutex);
-		if (p[i].nb_to_eat < p->shared->nb_must_eat)
+		pthread_mutex_lock(&p[i].meal_nb);
+		if (p[i].nb_eat < p->shared->nb_must_eat)
 		{
-			pthread_mutex_unlock(&p[i].meal_mutex);
+			pthread_mutex_unlock(&p[i].meal_nb);
 			return (true);
 		}
-		pthread_mutex_unlock(&p[i].meal_mutex);
+		pthread_mutex_unlock(&p[i].meal_nb);
 		i++;
 	}
 	set_flag(p->shared);
@@ -73,7 +73,7 @@ static void	*waiter_routine(void *p)
 	t_philo	*philos;
 
 	philos = (t_philo *)p;
-	while ((check_starvation(philos)) && (check_termination(philos)))
+	while ((check_termination(philos)) && (check_starvation(philos)))
 		usleep(100);
 	return (NULL);
 }

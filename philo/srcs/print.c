@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 15:00:36 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/20 20:53:42 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 20:07:35 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ void	err_msg(void)
 	write(2, "arg2:\ttime to die (>0) [milliseconds]\n", 39);
 	write(2, "arg3:\ttime to eat (>0) [milliseconds]\n", 39);
 	write(2, "arg4:\ttime to sleep (>=0) [milliseconds]\n", 42);
-	write(2, "arg5:\tnumber of times each philosophers must eat (>=0)\n", 56);
+	write(2, "arg5:\tnumber of times each philosophers must eat (>=0)", 55);
+	write(2, " <option>\n", 11);
+	write(2, "*all of arguments is expected under INT_MAX\n", 45);
 }

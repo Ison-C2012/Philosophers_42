@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:49:52 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/21 18:31:20 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:30:57 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	destroy_mutex_philo(t_philo *philos, int i)
 	exit_code = EXIT_SUCCESS;
 	while (i--)
 	{
-		if (pthread_mutex_destroy(&philos[i].meal_mutex))
+		if (pthread_mutex_destroy(&philos[i].meal_nb))
+			exit_code = EXIT_FAILURE;
+		if (pthread_mutex_destroy(&philos[i].meal_time))
 			exit_code = EXIT_FAILURE;
 	}
 	return (exit_code);
