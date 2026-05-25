@@ -26,17 +26,17 @@ do
 
 	if grep -q "died" log
 	then
-		deat_count=$((deat_count + 1))
-		#echo -n "result: "
-		#echo "died at try $count"
-		#break
+		#deat_count=$((deat_count + 1))
+		echo -n "result: "
+		echo "died at try $count"
+		break
 	fi
 
 	if (( count == MAX_TRY ))
 	then
 		echo -n "result: "
-		echo "$dead_count philosophers died with $count try"
-		#echo "No philosopher died with $count try"
+		#echo "$dead_count philosophers died with $count try"
+		echo "No philosopher died with $count try"
 		break
 	fi
 done
