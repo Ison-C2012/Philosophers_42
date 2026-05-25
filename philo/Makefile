@@ -4,7 +4,7 @@ RULE := all
 
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
-IFLAGS := -I includes
+IFLAGS := -I incs
 OFLAGS := -lpthread
 
 SRCDIR := srcs
