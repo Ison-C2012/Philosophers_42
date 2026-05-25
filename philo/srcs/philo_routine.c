@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:32:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/25 21:51:46 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/26 00:43:52 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ bool	check_stop(t_shared *shared)
 	}
 	pthread_mutex_unlock(&shared->flag);
 	return (false);
+}
+
+static void	*philo_solo_routine(t_philo *philo)
+{
+	print_status(philo, "is thinking");
+	print_status(philo, "has taken a fork");
+	while (1)
+	{
+		if (check_stop(philo->shared))
+			break ;
+		usleep(1000);
+	}
+	return (NULL);
 }
 
 static void	set_start(t_philo *philo)
@@ -42,19 +55,6 @@ static void	set_start(t_philo *philo)
 		usleep(10);
 	}
 	pthread_mutex_unlock(&philo->shared->start);
-}
-
-static void	*philo_solo_routine(t_philo *philo)
-{
-	print_status(philo, "is thinking");
-	print_status(philo, "has taken a fork");
-	while (1)
-	{
-		if (check_stop(philo->shared))
-			break ;
-		usleep(1000);
-	}
-	return (NULL);
 }
 
 static void	first_thinking(t_philo *philo, t_shared *shared)
