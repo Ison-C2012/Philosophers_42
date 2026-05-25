@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:27:09 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/23 06:35:28 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 16:55:42 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,17 @@ long long	get_elapsed_time(t_shared *shared)
 	time_of_beginning = shared->time_of_beginning;
 	pthread_mutex_unlock(&shared->start);
 	return ((get_time_us() - time_of_beginning));
+}
+
+void	ft_usleep(long long time, t_shared *shared)
+{
+	long long	target_time;
+
+	target_time = get_time_us() + time;
+	while (get_time_us() < target_time)
+	{
+		if (check_stop(shared))
+			break ;
+		usleep(500);
+	}
 }

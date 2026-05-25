@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/24 01:27:21 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 17:26:37 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-#define BUFFER_TIME 10000
-
 typedef struct s_shared
 {
 	int				nb_philo;
@@ -34,8 +32,6 @@ typedef struct s_shared
 	int				nb_must_eat;
 	long long		time_of_beginning;
 	pthread_mutex_t	*forks;
-//	pthread_mutex_t	*fork_mutex;
-//	int				*fork_status;
 	pthread_mutex_t	start;
 	int				thread_created;
 	pthread_mutex_t	flag;
@@ -73,6 +69,7 @@ int			philo(t_shared *shared);
 
 //philo_routine.c
 void		*philo_routine(void *p);
+bool		check_stop(t_shared *shared);
 
 //philo_helpher.c
 int			join_philo(t_philo *philos, int nb);
@@ -89,6 +86,7 @@ void		put_forks(t_philo *p);
 void		eating(t_philo *p);
 void		sleeping(t_philo *p);
 void		thinking(t_philo *p, long long time);
+void		thinking_1(t_philo *p);
 void		died(t_philo *p);
 
 //print.c
@@ -100,5 +98,6 @@ void		print_died(t_philo *p, char *s);
 //time.c
 long long	get_time_us(void);
 long long	get_elapsed_time(t_shared *shared);
+void		ft_usleep(long long time, t_shared *shared);
 
 #endif

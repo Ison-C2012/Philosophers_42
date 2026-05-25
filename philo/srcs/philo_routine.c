@@ -6,21 +6,21 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/16 10:32:56 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/24 01:14:44 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/24 17:24:18 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static bool	check_stop(t_philo *p)
+bool	check_stop(t_shared *shared)
 {
-	pthread_mutex_lock(&p->shared->flag);
-	if (p->shared->stop_flag)
+	pthread_mutex_lock(&shared->flag);
+	if (shared->stop_flag)
 	{
-		pthread_mutex_unlock(&p->shared->flag);
+		pthread_mutex_unlock(&shared->flag);
 		return (true);
 	}
-	pthread_mutex_unlock(&p->shared->flag);
+	pthread_mutex_unlock(&shared->flag);
 	return (false);
 }
 
@@ -42,13 +42,6 @@ static void	set_start_to_think(t_philo *philo)
 		usleep(10);
 	}
 	pthread_mutex_unlock(&philo->shared->start);
-	if (philo->id % 2)
-	{
-		if (philo->shared->nb_philo % 2 && philo->id == 1)
-			thinking(philo, philo->shared->time_to_eat * 2);
-		else
-			thinking(philo, philo->shared->time_to_eat);
-	}
 }
 
 static void	*philo_solo_routine(t_philo *philo)
@@ -57,11 +50,34 @@ static void	*philo_solo_routine(t_philo *philo)
 	print_status(philo, "has taken a fork");
 	while (1)
 	{
-		if (check_stop(philo))
+		if (check_stop(philo->shared))
 			break ;
 		usleep(1000);
 	}
 	return (NULL);
+}
+
+static void	first_thinking(t_philo *philo, t_shared *shared)
+{
+	if (philo->id % 2)
+	{
+		if (shared->time_to_die <= shared->time_to_eat)
+			thinking(philo, shared->time_to_die);
+		else if (shared->time_to_die <= shared->time_to_eat * 2)
+		{
+			if (shared->nb_philo % 2 && philo->id == 1)
+				thinking(philo, shared->time_to_die);
+			else
+				thinking(philo, shared->time_to_eat);
+		}
+		else
+		{
+			if (shared->nb_philo % 2 && philo->id == 1)
+				thinking(philo, shared->time_to_eat * 2);
+			else
+				thinking(philo, shared->time_to_eat);
+		}
+	}
 }
 
 void	*philo_routine(void *p)
@@ -72,17 +88,22 @@ void	*philo_routine(void *p)
 	if (philo->shared->nb_philo == 1)
 		return (philo_solo_routine(philo));
 	set_start_to_think(philo);
-	while (!check_stop(philo))
+	first_thinking(philo, philo->shared);
+	while (!check_stop(philo->shared))
 	{
 		take_forks(philo);
-		if (check_stop(philo))
+		if (check_stop(philo->shared))
 		{
 			put_forks(philo);
 			break ;
 		}
 		eating(philo);
 		put_forks(philo);
+		if (check_stop(philo->shared))
+			break ;
 		sleeping(philo);
+		if (check_stop(philo->shared))
+			break ;
 		thinking(philo, philo->shared->time_to_think);
 	}
 	return (NULL);
