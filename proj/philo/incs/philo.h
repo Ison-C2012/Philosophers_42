@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/25 21:28:14 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/28 18:15:50 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_shared
 	int				nb_must_eat;
 	long long		time_of_beginning;
 	int				created_thread_nb;
+	int				start_flag;
 	int				stop_flag;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	start;
