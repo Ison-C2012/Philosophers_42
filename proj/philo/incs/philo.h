@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:03:33 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/28 18:15:50 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 20:44:42 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int			ft_isdigit(char c);
 //valid.c
 bool		is_positive_numbers(char **av);
 bool		is_overflow(char **av);
+size_t		ft_strlen(char *s);
 
 //mutex.c
 int			init_mutex(t_shared *shared);

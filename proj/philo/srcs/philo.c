@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/25 21:29:54 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 20:27:22 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static int	clean_philo(t_philo *philos, int nb)
 		exit_code = EXIT_FAILURE;
 	if (destroy_mutex_philo(philos, nb))
 		exit_code = EXIT_FAILURE;
-	free(philos);
 	return (exit_code);
 }
 
@@ -87,9 +86,10 @@ int	philo(t_shared *shared)
 	if (waiter(philos))
 	{
 		clean_philo(philos, shared->nb_philo);
-		return (EXIT_FAILURE);
+		return (free(philos), EXIT_FAILURE);
 	}
 	if (clean_philo(philos, shared->nb_philo))
-		return (EXIT_FAILURE);
+		return (free(philos), EXIT_FAILURE);
+	free(philos);
 	return (EXIT_SUCCESS);
 }

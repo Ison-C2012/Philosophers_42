@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:02:51 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/25 20:14:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 20:44:25 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,29 @@
 
 #define INT_MAX_STR "2147483647"
 
-static bool	is_positive_number(char *str)
-{
-	if (*str == '+')
-		str++;
-	if (*str == '0')
-		return (false);
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-			return (false);
-		str++;
-	}
-	return (true);
-}
-
 bool	is_positive_numbers(char **av)
 {
+	char	*str;
+
 	while (*av)
 	{
-		if (!is_positive_number(*av))
+		str = *av;
+		if (*str == '+')
+			str++;
+		if (*str == '0')
 			return (false);
+		while (*str)
+		{
+			if (!ft_isdigit(*str))
+				return (false);
+			str++;
+		}
 		av++;
 	}
 	return (true);
 }
 
-static size_t	ft_strlen(char *s)
+size_t	ft_strlen(char *s)
 {
 	size_t	len;
 

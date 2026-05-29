@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/28 19:59:02 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 20:20:57 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char **argv)
 	if (init_shared(&shared, &argv[1]))
 		return (EXIT_FAILURE);
 	if (philo(&shared))
-		return (EXIT_FAILURE);
+		return (clean_shared(&shared), EXIT_FAILURE);
 	if (clean_shared(&shared))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
