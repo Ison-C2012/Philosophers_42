@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 17:36:00 by by keitotak       #+#    #+#             */
-/*   Updated: 2026/05/29 20:27:22 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 23:06:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,21 @@ int	philo(t_shared *shared)
 	if (philos == NULL)
 		return (EXIT_FAILURE);
 	if (create_philo(philos, shared))
-		return (free(philos), EXIT_FAILURE);
+	{
+		free(philos);
+		return (EXIT_FAILURE);
+	}
 	if (waiter(philos))
 	{
 		clean_philo(philos, shared->nb_philo);
-		return (free(philos), EXIT_FAILURE);
+		free(philos);
+		return (EXIT_FAILURE);
 	}
 	if (clean_philo(philos, shared->nb_philo))
-		return (free(philos), EXIT_FAILURE);
+	{
+		free(philos);
+		return (EXIT_FAILURE);
+	}
 	free(philos);
 	return (EXIT_SUCCESS);
 }

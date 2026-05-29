@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 15:00:36 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/29 20:46:01 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 23:11:05 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #define ARG3_MSG "arg3:\ttime to eat [milliseconds]\n"
 #define ARG4_MSG "arg4:\ttime to sleep [milliseconds]\n"
 #define ARG5_MSG "arg5:\tnumber of times each philosophers must eat <option>\n"
-#define RNG_MSG "All of arguments must be greater than 0 and within INT_MAX\n"
+#define RNG_MSG "All of arguments must be greater than 0 and within INT_MAX.\n"
 
 void	err_msg(void)
 {
@@ -28,7 +28,7 @@ void	err_msg(void)
 	write(2, ARG3_MSG, ft_strlen(ARG3_MSG) + 1);
 	write(2, ARG4_MSG, ft_strlen(ARG4_MSG) + 1);
 	write(2, ARG5_MSG, ft_strlen(ARG5_MSG) + 1);
-	write(2, RNG_MSG, ft_strlen(ARG5_MSG) + 1);
+	write(2, RNG_MSG, ft_strlen(RNG_MSG) + 1);
 }
 
 void	print_died(t_philo *p, char *s)
