@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:12 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/29 20:20:57 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/05/29 21:26:24 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,3 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
-//	print_shared(&shared);
-/*signal function for Ctrl+C/Ctrl+D to prevent from memory leaks*/
